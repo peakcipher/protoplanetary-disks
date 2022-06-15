@@ -40,7 +40,7 @@ type :: type_photon_ray_multi
 end type type_photon_ray_multi
 
 
-type :: type_position_cartesian
+type :: type_position_cartesian ! defining cartrsian co-ordinates
   double precision x, y, z
 end type type_position_cartesian
 
