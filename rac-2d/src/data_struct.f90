@@ -2,22 +2,22 @@ module data_struct
 
 implicit none
 
-integer, parameter :: MaxNumOfGasComponents  = 1
-integer, parameter :: MaxNumOfDustComponents = 4
+integer, parameter :: MaxNumOfGasComponents  = 1  ! maximum number of gas components
+integer, parameter :: MaxNumOfDustComponents = 4  ! maximum number of dust components
 
-integer, parameter, private :: const_len_energy_level = 12
-integer, parameter, public :: const_len_qnum = 15
-integer, parameter, private :: const_len_molecule = 12
+integer, parameter, private :: const_len_energy_level = 12  ! private mean this data type cannot be used outside this module by the program
+integer, parameter, public :: const_len_qnum = 15           ! public means this data type can be used outside this module by the program
+integer, parameter, private :: const_len_molecule = 12      ! what does const_len mean?
 
-integer, parameter :: MaxNumOfFreqWin = 16
-integer, parameter :: MaxNumOfLamWin  = 16
+integer, parameter :: MaxNumOfFreqWin = 16  ! maximum number of frequency windows
+integer, parameter :: MaxNumOfLamWin  = 16  ! maximum number of wavelength windows
 
-integer, parameter :: NumOfBasicParam = 2
+integer, parameter :: NumOfBasicParam = 2 ! number of basic parameters
 
-integer, parameter :: LongInt = 8
+integer, parameter :: LongInt = 8 ! what?
 
 type :: type_ray
-  double precision x, y, z, vx, vy, vz
+  double precision x, y, z, vx, vy, vz  ! presumable defines parameters of a light ray, position and velocity
 end type type_ray
 
 
