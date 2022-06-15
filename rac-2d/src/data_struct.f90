@@ -51,7 +51,7 @@ type :: type_direction_cartesian
 end type type_direction_cartesian
 
 
-type :: type_sphere_coor_quat
+type :: type_sphere_coor_quat !  defining spherical co-ordinates
   double precision costheta, sintheta, cosphi, sinphi
 end type type_sphere_coor_quat
 
