@@ -1,3 +1,5 @@
+! Neufeld & Kaufman (1993) and Neufeld et al. (1995) - ref. Du & Bergin, 2014 (Section 2.3.7)
+
 module load_Neufeld_cooling_H2
 
 use trivials

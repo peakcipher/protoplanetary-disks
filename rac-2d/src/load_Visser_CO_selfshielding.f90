@@ -1,3 +1,5 @@
+! Visser et al. (2009) - ref. Du & Bergin, 2014 (Section 2.2.7)
+
 module load_Visser_CO_selfshielding
 
 use trivials
