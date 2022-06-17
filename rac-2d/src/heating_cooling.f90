@@ -622,7 +622,7 @@ function cooling_LymanAlpha()
 end function cooling_LymanAlpha
 
 
-function cooling_free_bound()
+function cooling_free_bound() ! free–bound radiation refers to the radiative combination process, in which a free electron recombines with an ion.
   ! Draine 2011, page 139, equation 14.5 (optically thin case); and page 320, equation 27.22, 27.23
   double precision cooling_free_bound
   double precision t1, t2
@@ -645,7 +645,7 @@ function cooling_free_bound()
 end function cooling_free_bound
 
 
-function cooling_free_free()
+function cooling_free_free() ! Ths refers to Thermal Bremsstrahlung
   ! Tielens 2005, page 53, equation 2.65
   ! Essentially a simpler version of Draine equation (10.12).
   ! Osterbrock 2006, p49
