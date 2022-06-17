@@ -1,6 +1,6 @@
 module load_Bethell_Xray_cross
 
-! Bethell 2011, Table 2
+! Bethell & Bergin 2011a (Du and Bergin paper), Table 2 (added to Zotero)
 
 implicit none
 
