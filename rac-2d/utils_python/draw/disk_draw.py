@@ -115,7 +115,7 @@ mycm = make_my_colormap(c_list=[(0.0, (0.5, 0.0, 0.5)),
 
 rcParams['axes.color_cycle'] = mycolors
 
-
+# To plot the radial variance of gas.
 def task1(now_dir = '/n/Users/fdu/now/',
           model_name = '20150307_dep_s',
           iter_fname = 'iter_0001.dat',
@@ -439,6 +439,10 @@ def task1a(now_dir = '/n/Users/fdu/now/',
         #    ],
         )
 
+
+# It plots n gas, Tgas, Tdust, gH2O, H2O , CO , gCO , CO2 , gCO2
+# , NO2 , gNO2 , NO , gNO , OH , gOH , gH , H , gH2 , H2 , C , C2H , O
+# , gO , G0 UV and flx Xray as a function of Z and r.
 def task2(now_dir = '/n/Users/fdu/now/',
           model_name = '20150307_noD_d_1comp',
           iter_fname = 'iter_0001.dat',
@@ -550,6 +554,8 @@ def task2(now_dir = '/n/Users/fdu/now/',
         )
 
 
+
+# To compare the Z vs r plot of n gas, G0 UV, n(C2H) for two different models.
 def task3():
     ds = []
     for mname in ['20150307_noD_d_rerun2a', '20150307_noD_d_1comp_rerun']:
@@ -610,7 +616,7 @@ def task3():
     plt.savefig('/n/Users/fdu/now/fig4_cont_rerun2a_n.pdf', bbox_inches='tight')
 
 
-
+# Plot of Z vs r for n gas, n(H2O), n(gH2O), tau.
 def task4(now_dir = '/n/Users/fdu/now/',
           model_name = '20150307_dep_s',
           iter_fname = 'iter_0001.dat',
@@ -650,7 +656,7 @@ def task4(now_dir = '/n/Users/fdu/now/',
             )
 
 
-
+# Plot of Z vs r for n gas, Tdust, G0 UV, H2O.
 def task4a(now_dir = '/n/Fdu1/work/grid_20150703_redo/',
           model_name = 'run_004',
           savefig_dir=None,
@@ -691,6 +697,8 @@ def task4a(now_dir = '/n/Fdu1/work/grid_20150703_redo/',
             )
 
 
+# It shows the molecules with abundances grater than a threshold
+# value.
 def task5(data_fname):
     items, d = load_data_as_dic(data_fname, returnOriginalKeys=True)
     nitem = len(items)

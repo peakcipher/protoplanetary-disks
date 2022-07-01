@@ -1,3 +1,6 @@
+# Contains atomic number and molecular weight of few elements.
+# Can load this data as dictionary and in sequence.
+
 # symbol, name, atomic number, molecular weight
 _data = r"""'Ac', 'Actinium', 89, 227
 'Ag', 'Silver', 47, 107.868

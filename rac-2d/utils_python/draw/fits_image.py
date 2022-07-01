@@ -1121,7 +1121,8 @@ def task11(res_dir = '/n/Users/fdu/now/res/',
     plt.savefig('/n/Users/fdu/now/fig1_time1E31E41E5.pdf', bbox_inches='tight')
 
 
-
+# Works similar to Task11 of fits image.py but with different max
+# v value.
 def task11d(res_dir = '/n/Users/fdu/now/res/',
           model_dir=None,
           FWHM=0.35,

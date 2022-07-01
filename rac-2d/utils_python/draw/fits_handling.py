@@ -682,7 +682,8 @@ def task4():
     print 'Making video'
     make_a_video(cb, fname_C18O + '_' + model_dir + '.mp4', ifrRange=(50,150))
 
-
+# To visualize the contribution of a molecule in the disk at different
+# frequencies and at different beam sizes.
 def task4a(model_dir = None,
            molecule_dir = None,
            linefname_molecule = None,
@@ -715,7 +716,8 @@ def task4a(model_dir = None,
     cb.draw_sum_channels(fname_molecule + '_' + model_dir + '_' + molecule_dir + '_sum.pdf', xRange=(4,-4), yRange=(-4,4), axisUnit='"', gaussianfit=False)
     #cb.draw_peak_channel(fname_molecule + '_' + model_dir + '_peak.pdf')
 
-
+# Plot of x vs y of the disk at all the frequencies after removing the
+# baselines.
 def task5():
     from draw.long_function_definitions import customaxis
     def do_a_spectrum(fname, model_dir, img_dir, nbin=100):
@@ -912,6 +914,7 @@ def task8(model_dir=None, FWHM=1.0, C2H_dir='C2H', linefname_C2H_combine = None)
     #make_a_video(cb, fname_C2H + '_' + model_dir + '.mp4', ifrRange=(50,150))
 
 
+# To plot Total flux of disk for a particular beam size.
 def task9(res_dir = '/n/Users/fdu/now/res/',
           model_dir=None,
           FWHM=1.0,
@@ -975,7 +978,7 @@ def task9(res_dir = '/n/Users/fdu/now/res/',
             returnax=True,
             savepdf=True, fig=fig, pos=(0.1, 0.1, 0.4, 0.8), pos_angle=0.0)
 
-
+# x vs y plot disk for total flux with sharp and smooth transitions.
 def task10(res_dir = '/n/Users/fdu/now/res/',
           model_dir=None,
           FWHM=0.35,
@@ -1045,7 +1048,9 @@ def task10(res_dir = '/n/Users/fdu/now/res/',
     set_axis_color(cax1, color='white')
     plt.savefig('/n/Users/fdu/now/smooth_vs_transition_new_rerun1.pdf', bbox_inches='tight')
     
-
+# Plot of x vs y for a molecule for J = 7/2 - 5/2 , F = 4 - 3 and
+# 3 - 2 emission at 10^3 , 10^4 , and 10^5 years, starting with a uniformly high
+# abundance (same molecule) of 10^−5.
 def task11(res_dir = '/n/Users/fdu/now/res/',
           model_dir=None,
           FWHM=0.35,
@@ -1111,7 +1116,10 @@ def task11(res_dir = '/n/Users/fdu/now/res/',
     set_axis_color(cax, color='white')
     plt.savefig('/n/Users/fdu/now/fig1_time1E31E41E5.pdf', bbox_inches='tight')
 
-
+# Plot of x vs y for a molecule for prediction of combined emission
+# for the two transitions J = 7/2 - 5/2 , F = 4 - 3 and 3 - 2 of C2H for
+# models with different uniform elemental C/O ratio at the same integrated
+# flux color stretch.
 def task11a(res_dir = '/n/Users/fdu/now/res/',
           model_dir=None,
           FWHM=0.35,
@@ -1177,7 +1185,8 @@ def task11a(res_dir = '/n/Users/fdu/now/res/',
     set_axis_color(cax, color='white')
     plt.savefig('/n/Users/fdu/now/figDep_uniform_4332_r.pdf', bbox_inches='tight')
 
-
+# To plot radial variation of the column density for different (uni-
+# form) C/O elemental abundance ratio.
 def task11b(res_dir = '/n/Users/fdu/now/res/',
           FWHM=0.7,
           fits_dirs=None,
@@ -1282,7 +1291,8 @@ def task11c(res_dir = '/n/Users/fdu/now/res/',
     #
     plt.savefig('/n/Users/fdu/now/fig_dust_sigma.pdf', bbox_inches='tight')
 
-
+# Stacked image of individual C2H detections presented for TW
+# Hya and DM Tau.
 def task12(linedir_s,
           res_dir = '/n/Users/fdu/now/res/',
           pos_angle = (None, -45.0),
