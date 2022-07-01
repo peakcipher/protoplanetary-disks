@@ -220,7 +220,11 @@ namelist /analyse_configure/ &
 
 contains
 
-
+! This is the most important subroutine of the entire rac-2d
+! code. It starts with loading the grid information, then does the optical
+! and chemical stuff. Next it checks for global iteration after covering all the
+! defined layers. The refinement stops after final iteration and we store the
+! informations we have.
 subroutine disk_iteration
   integer i, i0, i_count, l_count, ii, iVertIter
   !
@@ -394,7 +398,11 @@ subroutine disk_iteration
 end subroutine disk_iteration
 
 
-
+! This is used in the previous subroutine. We start with
+! making lookup table to get the temperature and wavelength.
+! Next we use the blackbody and xray data and prepare the stellar spectrum. After
+! rescaling the uv part of the spectrum, we store the merged spectrum data
+! along with few other parameters like, total luminosity, xray luminosity etc.
 subroutine montecarlo_prep
   integer i, i1, i2, j
   double precision lam_max
@@ -625,7 +633,9 @@ subroutine montecarlo_prep
 end subroutine montecarlo_prep
 
 
-
+! In the montecarlo prep section we merged two
+! different spectras using this subroutine. It simply combines two spectra
+! and at overlapping regions it prioritises one over the other.
 subroutine merge_stellar_spectrum(s1, s2)
   ! Merge spectra s1 and s2.  The result is stored in s2.
   ! In overlapping regions, s1 has a higher priority over s2, meaning that if
@@ -649,7 +659,8 @@ subroutine merge_stellar_spectrum(s1, s2)
 end subroutine merge_stellar_spectrum
 
 
-
+!  It sues the data provided to define various dust parameters 
+! like, minimum and maximum radius, t1, t2 etc.
 subroutine make_dusts_data
   integer i, j, itype, nradius, nradius_prev, nlam
   double precision rmin, rmax, ind, swei, swei_g, m
@@ -747,7 +758,8 @@ subroutine make_dusts_data
 end subroutine make_dusts_data
 
 
-
+! This is used in disk iteration subroutine to handle the
+! backup grid data.
 subroutine do_grid_stuff(iiter, overwrite)
   integer, intent(in) :: iiter
   logical, intent(in), optional :: overwrite
@@ -764,7 +776,8 @@ subroutine do_grid_stuff(iiter, overwrite)
   end if
 end subroutine do_grid_stuff
 
-
+! This will be used in a subroutine named, disk iteration preparation
+! to simply load the backup grid data.
 subroutine load_grid_grom_file
   allocate(root)
   call cell_init(root)
@@ -779,7 +792,8 @@ subroutine load_grid_grom_file
 end subroutine load_grid_grom_file
 
 
-
+! Once the montecarlo is done, it stores the spectrum from
+! the escaped photons and dumps the optical, preliminary physical data.
 subroutine do_optical_stuff(iiter, overwrite)
   integer, intent(in) :: iiter
   logical, intent(in), optional :: overwrite
@@ -869,7 +883,10 @@ subroutine do_optical_stuff(iiter, overwrite)
 end subroutine do_optical_stuff
 
 
-
+! this subroutine does the chemical calculations starting
+! from the inner edge defined by us. Then it moves through cells and layers
+! calculating temperature and n gas. Once the convergence has occured the
+! data is stored in next few steps.
 subroutine do_chemical_stuff(iiter)
   integer, intent(in) :: iiter
   integer i, i0, i_count, l_count
@@ -989,7 +1006,10 @@ subroutine do_chemical_stuff(iiter)
 end subroutine do_chemical_stuff
 
 
-
+! This subroutine uses few other subroutines
+! which we will see in details in a while. Briefly this subroutine uses column
+! gravity force and forms a vertical structure with dust temperature and
+! stores the structre information.
 subroutine do_vertical_struct_with_Tdust
   logical vertIterCvg
   integer iVertIter
@@ -1102,7 +1122,7 @@ subroutine do_vertical_struct_with_Tdust
 end subroutine do_vertical_struct_with_Tdust
 
 
-
+! To store the abundances and temperature.
 subroutine allocate_iter_stor
   integer i
   !
@@ -1121,7 +1141,8 @@ subroutine allocate_iter_stor
 end subroutine allocate_iter_stor
 
 
-
+! This subroutine calculates both column and
+! single cell gravity force using two different subroutines.
 subroutine post_vertical_structure_adj
   integer i
   mc_conf%maxw = min(get_surf_max_angle(), 0.99D0)
@@ -1143,7 +1164,7 @@ subroutine post_vertical_structure_adj
 end subroutine post_vertical_structure_adj
 
 
-
+! To calculate the abundance analytically.
 subroutine do_simple_chemistry(iiter)
   ! Calculate the atomic hydrogen abundance analytically
   integer, intent(in) :: iiter
@@ -1209,7 +1230,10 @@ subroutine do_simple_chemistry(iiter)
   end do
 end subroutine do_simple_chemistry
 
-
+! Once montecarlo is done thus subroutine calculates few
+! properties of the radiation field such as; the total flux, parameters for Xray
+! ,Lyman Alpha, UV etc. radiations. Then it also calculates the G0 factors.
+! There are various subroutines includes in this which we will also see in a while.
 subroutine post_montecarlo
   integer i, j
   integer i1, i2
@@ -1488,7 +1512,8 @@ pure subroutine fill_blank(x, v, mask, n, nth, nrange)
 end subroutine fill_blank
 
 
-
+! This subroutine uses abundances of HI and H2O
+! and resets the collector energy and counts if collector energy is allocated.
 subroutine montecarlo_reset_cells
   integer i
   !
@@ -1524,7 +1549,11 @@ subroutine montecarlo_reset_cells
 end subroutine montecarlo_reset_cells
 
 
-
+! This subroutine uses the dust data and various
+! physical parameters provided by us and creates the optical dust data and
+! the chemical stuff.
+! Finally the data is heating and ooling is also done
+! through heating cooling prepare subroutine.
 subroutine disk_iteration_prepare
   integer i
   !
@@ -1809,7 +1838,7 @@ subroutine calc_this_cell(id)
   nullify(hc_params)
 end subroutine calc_this_cell
 
-
+! To get the energy exchanged between dust.
 subroutine update_en_exchange_with_dust
   integer i
   !
@@ -1828,7 +1857,9 @@ subroutine update_en_exchange_with_dust
 end subroutine update_en_exchange_with_dust
 
 
-
+! It calculates the column density for a few
+! species to the star and ISM and introduces self shielding in the 
+! calculations. Finally it also calculates the graviational force from above.
 subroutine update_params_above_alt(i0)
   use load_Visser_CO_selfshielding
   integer, intent(in) :: i0
@@ -1906,7 +1937,8 @@ function get_H2_self_shielding(N_H2, dv_turb)
 end function get_H2_self_shielding
 
 
-
+! Uses the cell abundance to check if the list of a
+! cell is converging or not.
 subroutine check_convergency_cell(i0)
   integer, intent(in) :: i0
   ! Temperature is not considered.
@@ -1924,7 +1956,8 @@ subroutine check_convergency_cell(i0)
 end subroutine check_convergency_cell
 
 
-
+! It uses the check convergency cell to check
+! convergence for all the individual cells of the whole disk.
 subroutine check_convergency_whole_disk
   integer i
   a_disk_iter_params%n_cell_converged = 0
@@ -1942,7 +1975,8 @@ subroutine check_convergency_whole_disk
 end subroutine check_convergency_whole_disk
 
 
-
+! This is used in do chemical stuff to find the
+! number of calculating cells and update them.
 subroutine update_calculating_cells
   integer, dimension(:), allocatable :: list_tmp
   integer i, i0, itmp, j, k, n
@@ -2019,7 +2053,8 @@ function calc_Xray_ionization_rate(c) result(z_Xray)
 end function calc_Xray_ionization_rate
 
 
-
+! Sets various initial conditions (mentioned)
+! in the code.
 subroutine set_initial_condition_4solver(id, j, iiter)
   integer, intent(in) :: id, j, iiter
   integer flag
@@ -2108,7 +2143,8 @@ subroutine set_initial_condition_4solver(id, j, iiter)
 end subroutine set_initial_condition_4solver
 
 
-
+! Few parameters are rectified in this
+! and it starts the chemical evolution as well.
 subroutine set_initial_condition_4solver_continue(id, j)
   integer, intent(in) :: id, j
   associate(c => leaves%list(id)%p)
@@ -2155,7 +2191,10 @@ subroutine set_initial_condition_4solver_continue(id, j)
 end subroutine set_initial_condition_4solver_continue
 
 
-
+! To set various conditions for depletion of
+! Oxygen and Carbon.
+! This subroutine is important for calculating the
+! radial distribution of C/O ratio.
 subroutine deplete_oxygen_carbon_adhoc(id, y, flag)
   integer, intent(in) :: id
   integer, intent(in), optional :: flag
@@ -2428,7 +2467,7 @@ function depl_vfac_tab(r, rmins, rmaxs, vs, n)
   depl_vfac_tab = 0D0
 end function depl_vfac_tab
 
-
+! To simply deallocate columns and indices.
 subroutine deallocate_columns
   integer i, j
 #ifdef DIAGNOSIS_TRACK_FUNC_CALL
@@ -2451,7 +2490,9 @@ subroutine deallocate_columns
 end subroutine deallocate_columns
 
 
-
+! This subroutine starts with making a list of all the cells
+! and order them from center plane to top. Then sets the column indices
+! and thus make columns.
 subroutine make_columns
   integer i, j, i1
   type(type_cell), pointer :: cthis, cnext
@@ -2531,7 +2572,8 @@ subroutine make_columns
 end subroutine make_columns
 
 
-
+! It uses calc_Ncol_from_cell_to_point and calculates 
+! column density to ISM.
 subroutine calc_Ncol_to_ISM(c, iSp)
   ! iSp is the index in chem_idx_some_spe, not in the range 1 to
   ! chem_species%nSpecies
@@ -2548,7 +2590,8 @@ subroutine calc_Ncol_to_ISM(c, iSp)
 end subroutine calc_Ncol_to_ISM
 
 
-
+! Same as calc_Ncol_to_ISM, but this time the density is
+! calculated till the star.
 subroutine calc_Ncol_to_Star(c, iSp)
   ! iSp is the index in chem_idx_some_spe, not in the range 1 to
   ! chem_species%nSpecies
@@ -2738,7 +2781,7 @@ function calc_Ncol_from_cell_to_point(c, r, z, iSpe, fromCellCenter) result(N)
 end function calc_Ncol_from_cell_to_point
 
 
-
+! to store files after each iteration in .dat format.
 subroutine disk_save_results_pre
   write(filename_save_results, '("iter_", I4.4, ".dat")') &
     a_disk_iter_params%n_iter_used
@@ -2750,7 +2793,7 @@ subroutine disk_save_results_pre
   call write_header(fU_save_results)
 end subroutine disk_save_results_pre
 
-
+! Writes header for the parameters mentioned
 subroutine write_header(fU)
   integer, intent(in) :: fU
   character(len=64) fmt_str
@@ -2910,7 +2953,7 @@ subroutine write_header(fU)
     trim(tmp_str)
 end subroutine write_header
 
-
+! Saves the mentioned parameters of the disk.
 subroutine disk_save_results_write(fU, c)
   character(len=64) fmt_str
   integer, intent(in) :: fU
@@ -3081,7 +3124,8 @@ subroutine disk_save_results_write(fU, c)
   c%abundances
 end subroutine disk_save_results_write
 
-
+! It simply adds mass of individual cells to get the
+! mass of the disk.
 subroutine disk_calc_disk_mass
   integer i
   double precision m
@@ -3099,7 +3143,9 @@ subroutine disk_calc_disk_mass
 #endif
 end subroutine disk_calc_disk_mass
 
-
+! It calculates the volume of disk and adds
+! the product of the volume with density of each dust to get the mass of each
+! component of disk.
 subroutine disk_calc_dust_components_mass(mdisk_dusts_in_Msun)
   double precision, dimension(:), intent(out) :: mdisk_dusts_in_Msun
   integer i, j
@@ -3120,7 +3166,8 @@ subroutine disk_calc_dust_components_mass(mdisk_dusts_in_Msun)
                         / phy_Msun_CGS
 end subroutine disk_calc_dust_components_mass
 
-
+! To define the abundances of few species,
+! and set the hc parameters.
 subroutine set_hc_chem_params_from_cell(id)
   integer id
   !
@@ -3158,7 +3205,10 @@ subroutine set_hc_chem_params_from_cell(id)
   !
 end subroutine set_hc_chem_params_from_cell
 
-
+! To set various paameters like, aread, surface area,
+! volume and few other dust parameters. It aslo calculates the energy ex-
+! change for a disk, thermal pressure and calculates local velocity gradient,
+! thermal velocity width, turbulent width and coherent length.
 subroutine disk_set_a_cell_params(c, cell_params_copy, asCopied, only_rescal)
   integer i
   type(type_cell), intent(inout) :: c
@@ -3315,7 +3365,9 @@ subroutine disk_set_a_cell_params(c, cell_params_copy, asCopied, only_rescal)
   !
 end subroutine disk_set_a_cell_params
 
-
+! To calculate local dynamics. Specifically, few pa-
+! rameters like, keplerian angular velocity and velocity gradient, coherent
+! length, thermal pressure etc.
 subroutine calc_local_dynamics(c, init)
   type(type_cell), intent(inout) :: c
   logical, intent(in), optional :: init
@@ -3390,7 +3442,9 @@ subroutine calc_local_dynamics(c, init)
     total_gas_abundance
 end subroutine calc_local_dynamics
 
-
+! This is used in the post vertical structure adj and
+! calc local dynamics. This subroutine calculates the gravity of a single cell
+! using mass of the same.
 subroutine calc_gravity_single_cell(c)
   type(type_cell), intent(inout) :: c
   double precision R3
@@ -3483,7 +3537,9 @@ pure function get_alpha_viscosity(am)
   end if
 end function get_alpha_viscosity
 
-
+! To get few parameters lik, mass of dust
+! and gas. It basically computes the components of dust by rescalling it for
+! each of them.
 subroutine disk_set_gridcell_params_runonce
   integer i
   double precision, dimension(MaxNumOfDustComponents) :: mdisk_dusts
@@ -3515,7 +3571,7 @@ subroutine disk_set_gridcell_params_runonce
 end subroutine disk_set_gridcell_params_runonce
 
 
-
+! This is used for rescalling the dust density in disk set_gridcell_params
 subroutine rescale_dust_density(c, fresc)
   type(type_cell), intent(inout) :: c
   double precision, dimension(:), intent(in) :: fresc
@@ -3527,7 +3583,8 @@ end subroutine rescale_dust_density
 
 
 
-
+! Mathis–Rumpl–Nordsieck parameter for both the
+! dust types mentioned in paper.
 subroutine calc_dust_MRN_par(mrn)
   type(type_dust_MRN), intent(inout) :: mrn
   double precision tmp1, tmp2, norm
@@ -3560,7 +3617,8 @@ subroutine calc_dust_MRN_par(mrn)
   end if
 end subroutine calc_dust_MRN_par
 
-
+! Save the reaction rates according to reaction name and
+! product names.
 subroutine save_chem_rates(i0)
   integer, intent(in) :: i0
   integer fU, k
@@ -3600,7 +3658,7 @@ subroutine save_chem_rates(i0)
   close(fU)
 end subroutine save_chem_rates
 
-
+! To store the disk parameters once the configuration is done.
 subroutine save_post_config_params
   type(type_disk_basic_params) disk_params_tmp
   namelist /disk_params_log/ disk_params_tmp
@@ -3611,7 +3669,7 @@ subroutine save_post_config_params
   end if
 end subroutine save_post_config_params
 
-
+! This subroutine checks refinement for species.
 subroutine load_refine_check_species
   integer fU, i, i1, ios, n
   character(len=const_len_init_abun_file_row) str
@@ -3651,7 +3709,8 @@ subroutine load_refine_check_species
   end do
 end subroutine load_refine_check_species
 
-
+! It extracts data using x and y coordinates and then refines a
+! cell vertically.
 subroutine do_refine
   integer i, n_refine
   a_disk_iter_params%ncell_refine = 0
@@ -3677,7 +3736,8 @@ subroutine do_refine
   end if
 end subroutine do_refine
 
-
+! This is to refine cells vertically. The indices are also
+! remade as new cells are generated during refinement.
 subroutine refine_after_vertical
   type(type_cell), pointer :: c
   integer i, n_div
@@ -3726,7 +3786,8 @@ subroutine refine_after_vertical
 end subroutine refine_after_vertical
 
 
-
+! If required this subroutine combines two cells, consiering
+! them as children nodes.
 subroutine merge_cells
   type(type_cell), pointer :: prt
   integer i, j, itmp, stat
@@ -3853,7 +3914,7 @@ function need_to_merge(prt) result(shouldMerge)
     (maxs(6) / (mins(6)+1D-20) .le. 1.2D0) ! 6
 end function need_to_merge
 
-
+! To define the mentioned parameters like, dust temperature, abundance etc of the children node.
 subroutine set_par_from_children(prt)
   type(type_cell), pointer, intent(inout) :: prt
   integer i, nsum
@@ -3892,7 +3953,7 @@ subroutine set_par_from_children(prt)
 end subroutine set_par_from_children
 
 
-
+! Produces the number of bottom and leaf cells.
 subroutine remake_index
   !
   write(*, '(A)') 'Remaking the global index...'
@@ -3976,7 +4037,9 @@ function need_to_refine(c, n_refine)
   return
 end function need_to_refine
 
-
+! To refine a working cell. It first computes the
+! density reusing the input data and then calculates the column density to
+! ISM and star, abundances and hc rates.
 subroutine refine_this_cell_vertical(c, n)
   ! c is a working cell that needs to be refined.
   type(type_cell), target :: c
@@ -4041,7 +4104,7 @@ subroutine refine_this_cell_vertical(c, n)
   c%id = -1
 end subroutine refine_this_cell_vertical
 
-
+! To simply load the species to be analyzed.
 subroutine load_ana_species_list
   integer fU, ios, i, n
   integer, dimension(:), allocatable :: list_tmp
@@ -4087,7 +4150,7 @@ subroutine load_ana_species_list
 end subroutine load_ana_species_list
 
 
-
+! Loads the list of points to be analyzed.
 subroutine load_ana_points_list
   integer fU, ios, i, n
   double precision r, z
@@ -4478,7 +4541,7 @@ subroutine post_disk_iteration
 end subroutine post_disk_iteration
 
 
-
+! It first updates the parameters and the saves the results.
 subroutine do_save_only_structure
   integer i
   ! Reload just in case the grid has changed
@@ -4494,7 +4557,7 @@ end subroutine do_save_only_structure
 
 
 
-
+! To recheck calculation for cells.
 subroutine do_rerun_single_points
   integer i
   ! Reload just in case the grid has changed
@@ -4518,7 +4581,7 @@ subroutine load_ana_snippet
 end subroutine load_ana_snippet
 
 
-
+! Uses Newton Raphson iteration to get the dust temperature
 subroutine solve_a_Tdust(j)
   integer, intent(in) :: j
   double precision Td0, Ts1, Ts2, dTd, k, tmp
@@ -4574,7 +4637,8 @@ end function get_dEmit_dTd
 end module disk
 
 
-
+! To get the rates for few types of reactions using ordinary
+! differential equation method.
 subroutine chem_ode_f(NEQ, t, y, ydot)
   use chemistry
   use heating_cooling
@@ -4669,7 +4733,7 @@ end subroutine chem_ode_f
 
 
 
-
+! To get the mentioned realtime hc parameters for a single gas particle.
 subroutine realtime_heating_cooling_rate(r, NEQ, y)
   ! Heating/cooling rate for a single average gas particle.
   use chemistry
@@ -4751,7 +4815,8 @@ end subroutine realtime_heating_cooling_rate
 
 
 
-
+! To get rates for the mentioned types (3 types) of reactions
+! using ordinary differential equation (Jacobian).
 subroutine chem_ode_jac(NEQ, t, y, j, ian, jan, pdj)
   use chemistry
   use heating_cooling

@@ -8,6 +8,13 @@ implicit none
 
 contains
 
+
+! It uses OpenfileSequentialRead to get the molecule
+! name then the energy levels. Next it allocates the radiative transitions.
+! Finally from the frequency info, generated from energy, it computes the
+! wavelength. It also allocates the collisional tranistions and tempreature
+! in next few parts. FInally it makes the list f temperatures and collision
+! coefficients. 
 subroutine load_moldata_LAMDA(filename, mol_data)
   character(len=*), intent(in) :: filename
   type(type_molecule_energy_set), pointer, intent(inout) :: mol_data

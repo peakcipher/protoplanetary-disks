@@ -59,7 +59,7 @@ private :: reorder_dust_data, clip_dust_data, extend_lam_range
 
 contains
 
-
+! Load the mixture of dust data.
 subroutine prep_dust_data
   integer i
   type(type_dust_collection_data) :: rawdust_data
@@ -105,7 +105,8 @@ end subroutine prep_dust_data
 
 
 
-
+! To mix different dust species. The radius, wavelength, and
+! few other parameters were also allocated.
 subroutine mix_rawdusts(nrawdust, rawdusts, wei, mixed)
   ! Mix different dust species, NOT mix different dust sizes!
   ! Dust grains with different size share the same weights.
@@ -160,7 +161,7 @@ subroutine mix_rawdusts(nrawdust, rawdusts, wei, mixed)
   mixed%g  = mixed%g  / sumw
 end subroutine mix_rawdusts
 
-
+! To store in ascending order of wavelength.
 subroutine reorder_dust_data(d)
   type(type_dust_data), intent(inout) :: d
   integer i
@@ -179,7 +180,8 @@ subroutine reorder_dust_data(d)
 end subroutine reorder_dust_data
 
 
-
+! To get dust data for a particular wavelength limit (lower
+! and upper).
 subroutine clip_dust_data(d, lammin, lammax)
   type(type_dust_data), intent(inout) :: d
   double precision, intent(in) :: lammin, lammax
@@ -233,7 +235,7 @@ subroutine clip_dust_data(d, lammin, lammax)
   d%wmax = d%w(n)
 end subroutine clip_dust_data
 
-
+! Simply load the raw dust data according to wavelength.
 subroutine load_dusts(rawdustinfo, raw_dust_data, min_lam, max_lam)
   type(type_dust_composition), intent(in) :: rawdustinfo
   type(type_dust_data), dimension(:), intent(out) :: raw_dust_data
@@ -255,7 +257,7 @@ subroutine load_dusts(rawdustinfo, raw_dust_data, min_lam, max_lam)
   end do
 end subroutine load_dusts
 
-
+! Uses openFileSequentialRead to load various dust parameters like radius and wavelength.
 subroutine load_Draine_dust(dust, filename)
   type(type_dust_data), intent(inout) :: dust
   character(len=*), intent(in) :: filename

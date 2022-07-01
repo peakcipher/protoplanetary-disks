@@ -8,6 +8,8 @@ implicit none
 
 contains
 
+
+! Stores the optical data like flux in binary format.
 subroutine back_cells_optical_data(dir_name, fname, iiter, dump, overwrite)
   character(len=*), intent(in) :: dir_name
   character(len=*), intent(in), optional :: fname
@@ -84,7 +86,9 @@ subroutine back_cells_optical_data(dir_name, fname, iiter, dump, overwrite)
 end subroutine back_cells_optical_data
 
 
-
+! Does a similar thing like back cells optical data,
+! but instead of optical data it stores the chemical data like, abundances,
+! column density to start and ISM.
 subroutine back_cells_chemical_data(dir_name, fname, iiter, dump, overwrite)
   character(len=*), intent(in) :: dir_name
   character(len=*), intent(in), optional :: fname
@@ -162,7 +166,8 @@ subroutine back_cells_chemical_data(dir_name, fname, iiter, dump, overwrite)
 end subroutine back_cells_chemical_data
 
 
-
+! Once again a similar process, but this time it
+! stores a lot of physical parameters like, dust temperature, area, volmume etc.
 subroutine back_cells_physical_data(dir_name, fname, iiter, dump, preliminary, overwrite)
   character(len=*), intent(in) :: dir_name
   character(len=*), intent(in), optional :: fname
@@ -544,7 +549,8 @@ subroutine back_cells_physical_data(dir_name, fname, iiter, dump, preliminary, o
 end subroutine back_cells_physical_data
 
 
-
+! It stores few specific physical parameters as
+! mentioned in the code.
 subroutine back_cells_physical_data_aux(dir_name, fname, iiter, dump, overwrite)
   character(len=*), intent(in) :: dir_name
   character(len=*), intent(in), optional :: fname
@@ -671,7 +677,8 @@ subroutine back_cells_physical_data_aux(dir_name, fname, iiter, dump, overwrite)
 end subroutine back_cells_physical_data_aux
 
 
-
+! This uses a few other subroutines to store the information
+! regarding grid
 subroutine back_grid_info(dir_name, fname, iiter, dump, overwrite)
   character(len=*), intent(in) :: dir_name
   character(len=*), intent(in), optional :: fname

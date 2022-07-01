@@ -171,7 +171,8 @@ end subroutine a_test_case
 
 
 
-
+! It uses various other subroutines to test run and get few
+! parameters like, n gas, dust temperature etc.
 subroutine b_test_case
   integer i, j, fU
   type(type_cell_rz_phy_basic), pointer :: ch => null()
@@ -339,7 +340,7 @@ subroutine b_test_case
 end subroutine b_test_case
 
 
-
+! It calculates chemical rates and also finds elemental residence and processes them.
 subroutine do_a_analysis(fname_pre, header)
   integer i, j, k, i0, fU1, fU2, fU3
   double precision sum_prod, sum_dest, accum
@@ -532,7 +533,9 @@ end subroutine do_a_analysis
 !end subroutine save_fits_cube
 
 
-
+! From the data produced, after iterations, it finds
+! whether a point lies in any cell or not. It also computes the total net
+! charge, total free charge and few other parameters.
 subroutine disk_iteration_postproc
   integer fU, fU1, fU2, ios, i, i0, j, idx, idx_diff
   double precision r, z
@@ -670,7 +673,7 @@ end subroutine disk_iteration_postproc
 
 
 
-
+! It defines the luminosity of star, total uv, lyman and xray ratios.
 subroutine disk_set_disk_params
   ! Background dust
   !a_disk%andrews_dust_bg = a_disk%andrews_gas

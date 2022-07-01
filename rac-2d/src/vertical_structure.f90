@@ -12,7 +12,7 @@ double precision, dimension(:), allocatable, private :: dz_s
 
 contains
 
-
+! This subroutine first calculates the disk mass. Then it coulumnwise calculates the dustgas structure.
 subroutine vertical_pressure_gravity_balance_alt(mstar, useTdust, &
     Tdust_lowerlimit, ngas_lowerlimit, ndust_lowerlimit, fix_dust_struct, &
     disk_gas_mass_preset, &
@@ -182,7 +182,8 @@ subroutine vertical_pressure_gravity_balance_alt(mstar, useTdust, &
 end subroutine vertical_pressure_gravity_balance_alt
 
 
-
+! These two are used in vertical pressure gravity balance alt and are defined as the
+! equations from the code.
 subroutine calc_dustgas_struct_snippet1(c)
   type(type_cell), intent(inout) :: c
   integer i
@@ -206,7 +207,8 @@ subroutine calc_dustgas_struct_snippet1(c)
   c%par%SitesPerGrain = 4D0 * c%par%sigdust_ave * const_SitesDensity_CGS
 end subroutine calc_dustgas_struct_snippet1
 
-
+! These two are used in vertical pressure gravity balance alt and are defined as the
+! equations from the code.
 subroutine calc_dustgas_struct_snippet2(c)
   type(type_cell), intent(inout) :: c
   c%par%mgas_cell = c%par%n_gas * c%par%volume * &
@@ -242,7 +244,9 @@ function calc_disk_gas_mass() result(m)
   m = m * 2D0 / phy_Msun_CGS  ! Two sides of the disk.
 end function calc_disk_gas_mass
 
-
+! We start with defining few parameters and then by following
+! the equations we find density values. Finally using the equations for n div,
+! we calculate it.
 subroutine get_ndiv(c, n_div)
   type(type_cell), pointer, intent(in) :: c
   integer, intent(out) :: n_div
@@ -459,7 +463,8 @@ subroutine clean_peculiar_cells
   end do
 end subroutine clean_peculiar_cells
 
-
+! To move along a column.
+! The domain upper boundary and the top edge of cell needs to be aligned.
 subroutine shift_and_scale_above
   type(type_cell), pointer :: cthis
   double precision ybelow, frescale

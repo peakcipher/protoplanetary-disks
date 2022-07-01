@@ -16,7 +16,10 @@ character(len=128) :: filename_config = ''
 
 contains
 
-
+! This subrouitne controls various other configure files like,
+! grid configure, chemistry configure, heating cooling configure, montecarlo configure,
+! dustmix configure, disk configure etc. This subroutine also saves the disk
+! iteration parameters.
 subroutine config_do
   use my_timer
   integer fU

@@ -18,6 +18,7 @@ double precision, dimension(nT), private :: lg10Q
 
 contains
 
+! To get the energy levels, transitions for CDMS data.
 subroutine load_cdms_mol(dir_name, fname, fname_part, mol_data)
   character(len=*), intent(in) :: dir_name, fname, fname_part
   type(type_molecule_energy_set), pointer, intent(inout) :: mol_data
@@ -179,7 +180,8 @@ subroutine load_cdms_mol(dir_name, fname, fname_part, mol_data)
   !
 end subroutine load_cdms_mol
 
-
+! To get extract information of a line from a CDMS data.
+! This subroutine is used in load cdms mol for getting data.
 subroutine read_a_line_cdms(fU, freq, uncer, intens, dof, Elow, gup, tag, cquan, quanup, quanlow)
   integer, intent(in) :: fU
   double precision, intent(out) :: freq, uncer, intens, Elow
@@ -192,7 +194,8 @@ subroutine read_a_line_cdms(fU, freq, uncer, intens, dof, Elow, gup, tag, cquan,
     freq,  uncer, intens, dof, Elow, gup, tag, cquan, quanup, quanlow
 end subroutine read_a_line_cdms
 
-
+! To get the statistical weight. 
+! This is also used in load cdms mol.
 function calc_statistical_weight_cdms(cquan, quannum) result(g)
   ! Ref: https://cdms.astro.uni-koeln.de/classic/general/#format_of_quantum_numbers
   integer g
@@ -250,7 +253,7 @@ function calc_statistical_weight_cdms(cquan, quannum) result(g)
   end select
 end function calc_statistical_weight_cdms
 
-
+! To generate row wise partition of CDMS data.
 subroutine load_cdms_partition(dir_name, fname, moltag)
   character(len=*), intent(in) :: dir_name, fname
   integer, intent(in) :: moltag
@@ -357,7 +360,14 @@ function cdms_intensity2Aul(intens, freq_Hz, Elow, Eup, gup, T) result(Aul)
 end function cdms_intensity2Aul
 
 
-
+! Loading CDMS data to test.
+! You have to change
+! the following line of this subroutine;
+! call load_cdms_mol (‘/n/Users/fdu/now’, ‘cdms_HD.cat’,
+! ‘cdms_partition_functions .dat ’, molecule)
+! to,
+! call load_cdms_mol(‘your/now/directory/’, ‘cdms_HD.dat’,
+! ‘cdma_partition_functions .dat ’, molecule)
 subroutine test_load_cdms_adhoc
   type(type_molecule_energy_set), pointer :: molecule
   integer i, n

@@ -7,6 +7,7 @@ implicit none
 
 contains
 
+! To simply allocate local continuum lookuptable.
 subroutine allocate_local_cont_lut(c)
   type(type_cell), intent(inout), pointer :: c
   !
@@ -21,7 +22,7 @@ subroutine allocate_local_cont_lut(c)
 end subroutine allocate_local_cont_lut
 
 
-
+! Creating a local continuum lookuptable using flux.
 subroutine make_local_cont_lut(c)
   type(type_cell), intent(inout), pointer :: c
   integer i

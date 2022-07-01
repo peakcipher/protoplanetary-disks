@@ -186,7 +186,7 @@ namelist /chemistry_configure/ &
 
 contains
 
-
+! To set the parameters mentioned in the code.
 subroutine chem_set_solver_flags
   chemsol_params%IOPT = 1 ! 1: allow optional input; 0: disallow
   chemsol_params%NERR = 0 ! for counting number of errors in iteration
@@ -201,7 +201,7 @@ subroutine chem_set_solver_flags
   chemsol_params%t_scale_tol = 1D-10
 end subroutine chem_set_solver_flags
 
-
+! To set the parameters mentioned in the code.
 subroutine chem_set_solver_flags_alt(j)
   integer, intent(in) :: j
   chemsol_params%IOPT = 1 ! 1: allow optional input; 0: disallow
@@ -268,7 +268,8 @@ subroutine chem_set_solver_flags_alt(j)
 end subroutine chem_set_solver_flags_alt
 
 
-
+! Setting the outputs for different types of errors
+! and finding the cause.
 subroutine ode_solver_error_handling
   character(len=128) str_disp
   integer idx
@@ -387,7 +388,8 @@ subroutine ode_solver_error_handling
 end subroutine ode_solver_error_handling
 
 
-
+! This subroutine evolves the disk chemistry and mainly
+! controls the time spent per step and hence the total runtime.
 subroutine chem_evol_solve
   use my_timer
   external chem_ode_f, chem_ode_jac
@@ -587,7 +589,8 @@ subroutine chem_evol_solve
   !
 end subroutine chem_evol_solve
 
-
+! This subroutine calculates the chemical rate using various
+! chemical parameters like gas temperature, radius of grain etc.
 subroutine chem_cal_rates
   integer i, j, k, i1, i2
   double precision T300, TemperatureReduced, JNegaPosi, JChargeNeut
@@ -1085,7 +1088,7 @@ function getStickingCoeff(iSpe, T) result(s)
   s = S0_H * (1D0 + beta*r) / tmp
 end function getStickingCoeff
 
-
+! To get index of few special grains.
 subroutine chem_get_idx_for_special_species
   integer i
   allocate(chem_idx_some_spe%idx(chem_idx_some_spe%nItem))
@@ -1184,7 +1187,8 @@ subroutine chem_get_idx_for_special_species
   end if
 end subroutine chem_get_idx_for_special_species
 
-
+! To find the reactions with same reactants, 
+! products and reaction types and find the ones with smaller indices.
 subroutine chem_get_dupli_reactions
   ! Find out the duplicated reactions.
   ! Among all the reaction belonging to a single "duplicated set",
@@ -1217,7 +1221,8 @@ subroutine chem_get_dupli_reactions
 end subroutine chem_get_dupli_reactions
 
 
-
+! Parsing reactions, i.e storing te reactions in arrays
+! and getting the name of species involved.
 subroutine chem_parse_reactions
   integer i, j, k, n_tmp
   logical flag
@@ -1360,7 +1365,7 @@ subroutine chem_parse_reactions
 end subroutine chem_parse_reactions
 
 
-
+! To load the chemical reactions
 subroutine chem_load_reactions
   integer i, j, k, ios
   chem_net%nReactions = chem_reac_str%nReactions
@@ -1423,7 +1428,7 @@ subroutine chem_load_reactions
   end do
 end subroutine chem_load_reactions
 
-
+! To read the chemical reactions
 subroutine chem_read_reactions()
   integer fU, i, ios
   chem_reac_str%nReactions = &
@@ -1589,7 +1594,7 @@ function getBranchingRatio(idx)
   end if
 end function getBranchingRatio
 
-
+! To store all the different chemical elements.
 subroutine chem_elemental_residence
   use quick_sort
   double precision, dimension(:,:), allocatable :: ele_spe, tmp
@@ -1639,7 +1644,8 @@ subroutine chem_elemental_residence
   deallocate(ele_spe, tmp)
 end subroutine chem_elemental_residence
 
-
+! To find out how much of a species is produced
+! or destroyed, after a number of repetitions, using the reactions.
 subroutine get_species_produ_destr
   integer i, j, k, i0
   logical flag_repeat
@@ -1750,7 +1756,8 @@ subroutine get_species_produ_destr
   deallocate(counter1, counter2)
 end subroutine get_species_produ_destr
 
-
+! Using the rates, find out how much of an individual
+! species is produced and destroyed.
 subroutine get_contribution_each
   use quick_sort
   integer i, j, ireac
@@ -1788,7 +1795,8 @@ subroutine get_contribution_each
   deallocate(rates_all, tmp)
 end subroutine get_contribution_each
 
-
+! To set the method to calculate rate for different types of
+! reactions.
 subroutine chem_ode_f_alt(nr, r, ny, y)
   double precision, dimension(nr), intent(out) :: r
   double precision, dimension(ny), intent(in) :: y
@@ -1885,7 +1893,8 @@ subroutine chem_make_sparse_structure
 end subroutine chem_make_sparse_structure
 
 
-
+! Getting the time taken and few other
+! parameters after first step is complete.
 subroutine chem_evol_solve_prepare_run_once
   !
   chemsol_params%dt_first_step0 = chemsol_params%dt_first_step
@@ -1912,7 +1921,8 @@ end subroutine chem_evol_solve_prepare_run_once
 
 
 
-
+! To get the total time after a number of
+! steps and few pther parameters.
 subroutine chem_evol_solve_prepare_ongoing
   ! n_record may change
   integer n_rec_prev
@@ -1939,7 +1949,7 @@ end subroutine chem_evol_solve_prepare_ongoing
 
 
 
-
+! Storing the mentioned parameters from solver.
 subroutine chem_prepare_solver_storage
   integer i, j, k
   chemsol_params%LRW = &
@@ -1974,7 +1984,8 @@ end subroutine chem_prepare_solver_storage
 
 
 
-
+! Simply neutralizes the initial conditions
+! and load the initial abundances.
 subroutine chem_load_initial_abundances
   integer fU, i, ios
   character(len=const_len_init_abun_file_row) str
@@ -2023,7 +2034,7 @@ subroutine chem_load_initial_abundances
     chemsol_stor%y(1:chem_species%nSpecies)
 end subroutine chem_load_initial_abundances
 
-
+! Loads the enthalpies for available species.
 subroutine chem_load_species_enthalpies
   integer j, i1, fU, ios
   double precision dblTmp
@@ -2079,7 +2090,7 @@ subroutine chem_load_species_enthalpies
 end subroutine chem_load_species_enthalpies
 
 
-
+! To get the heat from reactions using enthaplies.
 subroutine chem_get_reaction_heat
   integer i, j, k
   double precision, dimension(:), allocatable :: htmp
@@ -2151,7 +2162,8 @@ subroutine chem_get_reaction_heat
 end subroutine chem_get_reaction_heat
 
 
-
+! To load the abundances
+! of different elements
 pure subroutine get_elemental_abundance(y, n, eleAb, nEle)
   integer, intent(in) :: n, nEle
   double precision, intent(in), dimension(n) :: y
@@ -2166,7 +2178,7 @@ pure subroutine get_elemental_abundance(y, n, eleAb, nEle)
   end do
 end subroutine get_elemental_abundance
 
-
+! using charge to rectify them
 subroutine rectify_abundances(n, y)
   integer, intent(in) :: n
   double precision, intent(inout), dimension(n) :: y

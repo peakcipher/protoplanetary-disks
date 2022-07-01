@@ -10,7 +10,7 @@ private :: partition, LE_vec, GE_vec
 
 contains
 
-
+! Uses quick sort vector idx to assign unique vector indices.
 subroutine unique_vector_idx(a, n, idx_unique, n_unique, rtol, atol, idx_reverse, aux)
   integer, intent(in) :: n
   double precision, dimension(n), intent(in) :: a
@@ -69,7 +69,7 @@ subroutine unique_vector_idx(a, n, idx_unique, n_unique, rtol, atol, idx_reverse
   deallocate(idx_sorted)
 end subroutine unique_vector_idx
 
-
+! Uses quick sort array to assign unique vectors.
 subroutine unique_vector(a, n, n_unique, rtol, atol)
   integer, intent(in) :: n
   double precision, dimension(n), intent(inout) :: a
@@ -110,7 +110,8 @@ subroutine unique_vector(a, n, n_unique, rtol, atol)
   deallocate(atmp)
 end subroutine unique_vector
 
-
+! This is used in unique vector idx to sort the indices
+! using quick sort array.
 subroutine quick_sort_vector_idx(a, n, idx_sorted)
   integer, intent(in) :: n
   double precision, dimension(n), intent(in) :: a

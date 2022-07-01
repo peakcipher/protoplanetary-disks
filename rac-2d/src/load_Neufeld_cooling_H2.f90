@@ -54,7 +54,8 @@ type(Neufeld_cooling_H2_params) a_Neufeld_cooling_H2_params
 
 contains
 
-
+! To generate the rotational H2 cool parameter
+! using interpolation or extrapolation.
 subroutine get_H2_rot_cool_params
   integer i
   double precision log10T
@@ -143,7 +144,8 @@ subroutine get_H2_rot_cool_params
   end associate
 end subroutine get_H2_rot_cool_params
 
-
+! The equation is used to find vibrational cool
+! parameter of H2.
 subroutine get_H2_vib_cool_params
   associate(a => a_Neufeld_cooling_H2_params, T => a_Neufeld_cooling_H2_params%T)
     a%L0 = 1.19D-24 * sqrt(T) * exp(-18100D0/(T+1190D0) - 5897D0/T)

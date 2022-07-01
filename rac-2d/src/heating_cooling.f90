@@ -65,7 +65,8 @@ COMMON /DLS001/ RLS,ILS
 
 contains
 
-
+! This loads hc molecular data of CII, OI, NII,
+! FeII and SiII and hen solves it statistically.
 subroutine heating_cooling_prepare
   ! Load the molecular data
   integer n_level_max
@@ -101,7 +102,8 @@ subroutine heating_cooling_prepare
   !
 end subroutine heating_cooling_prepare
 
-
+! Create a continumm lookuptable for line
+! cooling using local cont lut and make local cont lut.
 subroutine prepare_cont_lut_for_line_cooling
   type(type_cell), pointer :: c
   integer i
@@ -113,7 +115,7 @@ subroutine prepare_cont_lut_for_line_cooling
   end do
 end subroutine prepare_cont_lut_for_line_cooling
 
-
+! Load energy levels, collisional patterns, radiaive transfers and energy levels for a molecule.
 subroutine load_a_mol_data(fname, mol)
   character(len=*), intent(in) :: fname
   type(type_molecule_energy_set), target, intent(inout) :: mol
@@ -139,7 +141,8 @@ subroutine load_a_mol_data(fname, mol)
   end if
 end subroutine load_a_mol_data
 
-
+! Using various hc parameters and get
+! the mentioned molecular solutions.
 subroutine heating_cooling_prepare_molecule
   integer i
   mol_sta_sol%Tkin = hc_Tgas
@@ -203,7 +206,7 @@ function heating_chemical()
   chem_params%Tgas = tmp
 end function heating_chemical
 
-
+! Calculate chemical rates using gas temperature and get heat of reactions.
 subroutine heating_chemical_termbyterm(Tgas, nr, vecr)
   integer i, i0
   double precision, intent(in) :: Tgas
@@ -1402,7 +1405,7 @@ function solve_bisect_T(T0, n_iter, converged)
   end if
 end function solve_bisect_T
 
-
+! Prints the mentioned hc rates.
 subroutine print_out_h_c_rates(Tmin, Tmax, dT0, dT_ratio)
   double precision, intent(in) :: Tmin, Tmax, dT0, dT_ratio
   double precision dT, hc
@@ -1498,7 +1501,7 @@ function heating_cooling_is_very_slow() result(is_slow)
 end function heating_cooling_is_very_slow
 
 
-
+! To display heating and cooling rates.
 subroutine disp_h_c_rates
   associate(r => heating_cooling_rates)
   write(*,*) '1 ', r%heating_photoelectric_small_grain_rate    ! 1

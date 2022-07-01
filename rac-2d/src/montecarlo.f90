@@ -67,7 +67,7 @@ contains
 !  end if
 !end subroutine save_photon
 
-
+! creates look up tables.
 subroutine make_luts
   integer i
   luts%n = dusts%n
@@ -78,7 +78,8 @@ subroutine make_luts
   end do
 end subroutine make_luts
 
-
+! The comments in the code are enough to explain the
+! subroutine.
 subroutine get_mc_stellar_par(star, mc)
   type(type_stellar_params), intent(inout) :: star
   type(type_montecarlo_config), intent(inout) :: mc
@@ -106,7 +107,8 @@ subroutine get_mc_stellar_par(star, mc)
 end subroutine get_mc_stellar_par
 
 
-
+! Aligning the optical data for dust, HI and water to
+! same lambda vector by calculating the scattering cross sections.
 subroutine align_optical_data
   ! The imported optical data for dust, HI, and water are not aligned.
   ! So here I will align them to the same lambda vector.
@@ -194,7 +196,7 @@ pure subroutine reassign_optical(op, n, v)
 end subroutine reassign_optical
 
 
-
+! Define opmaterial parameters.
 subroutine make_global_coll
   !
   opmaterials%ntype = ncl_nondust + dusts%n
@@ -210,7 +212,9 @@ subroutine make_global_coll
 end subroutine make_global_coll
 
 
-
+! To make the local X ray absorption and scattering
+! parameters. It uses opmaterials as storage and the thompson scattering
+! where the scattering is an analytical fitting from Draine 2003.
 subroutine make_Xray_abs_sca(c)
   ! Make the local X-ray absorption and scattering parameters.
   ! The cross sections are on the per H atom basis.
@@ -267,7 +271,8 @@ end subroutine make_Xray_abs_sca
 
 
 
-
+! The comments provided in the code are enoughh
+! to explain the subroutine.
 subroutine update_gl_optical_OTF(T)
   ! The HI scattering dependends on temperature, so it needs to be
   ! recalculated for each cell.
@@ -302,7 +307,7 @@ subroutine update_gl_optical_OTF(T)
 end subroutine update_gl_optical_OTF
 
 
-
+! To allocate local optics like albedo, flux etc.
 subroutine allocate_local_optics(c, ntype, nlam)
   type(type_cell), intent(inout), pointer :: c
   integer, intent(in) :: ntype, nlam
@@ -341,7 +346,9 @@ subroutine allocate_local_optics(c, ntype, nlam)
 end subroutine allocate_local_optics
 
 
-
+! Sets the mentioned parameters to 0 and then updates
+! the local opticalX, optical OTF, makes absoulte Xray scattering and cal-
+! culates the total extinction.
 subroutine reset_local_optics(c)
   type(type_cell), intent(inout), pointer :: c
   integer i
@@ -394,7 +401,8 @@ pure subroutine update_local_opticalX(c)
 end subroutine update_local_opticalX
 
 
-
+! The comments in the code are enought to explain the
+! subroutine.
 subroutine montecarlo_do(mc, cstart)
   type(type_montecarlo_config), intent(inout) :: mc
   type(type_photon_packet) ph, ph0
@@ -511,7 +519,8 @@ subroutine montecarlo_do(mc, cstart)
 end subroutine montecarlo_do
 
 
-
+! Defines situtaions for a photon scattering in UV, X-ray
+! and Lyman Alpha
 subroutine emit_a_photon(mc, ph)
   type(type_montecarlo_config), intent(inout) :: mc
   type(type_photon_packet), intent(inout) :: ph
@@ -543,7 +552,6 @@ subroutine emit_a_photon(mc, ph)
   ph%e_count = 0
   call get_emit_dir_uniform(ph%ray, mc%minw, mc%maxw)
 end subroutine emit_a_photon
-
 
 
 pure subroutine get_next_lam(lamthis, idx, star, eph)
@@ -800,7 +808,8 @@ subroutine walk_scatter_absorb_reemit(ph, c, cstart, imax, nmax_encounter, &
 end subroutine walk_scatter_absorb_reemit
 
 
-
+! Uses temperature of dust from the look up table to get the
+! reemit lambda and ther informations.
 subroutine dust_reemit(ph, c, idust)
   type(type_photon_packet), intent(inout) :: ph
   type(type_cell), intent(inout), pointer :: c
@@ -1078,7 +1087,7 @@ end function project_doppler_lam
 !end subroutine find_encounter_type
 
 
-
+! Uses cur acc%ntype to get the encounter type.
 subroutine find_encounter_type_alt(itype)
   integer, intent(out) :: itype
   double precision r
@@ -1137,7 +1146,7 @@ pure function get_idx_for_kappa(lam, dust)
 end function get_idx_for_kappa
 
 
-
+! Using current accumulation, it calculates the total extinction.
 subroutine calc_total_extinction(c)
   type(type_cell), pointer, intent(inout) :: c
   double precision alb_tmp
@@ -1151,7 +1160,8 @@ subroutine calc_total_extinction(c)
 end subroutine calc_total_extinction
 
 
-
+! This is used in calc total extinction to get dust
+! attributed for materials in X-ray.
 subroutine update_current_accum(c, iKap, albedo)
   type(type_cell), pointer, intent(in) :: c
   integer, intent(in) :: iKap
@@ -1233,7 +1243,8 @@ function get_stellar_luminosity(star, lam1, lam2) result(lumi)
 end function get_stellar_luminosity
 
 
-
+! As the name says, it loads the stellar spectrum
+! using openFileSequentialRead according to wavelength values.
 subroutine load_stellar_spectrum(fname, star)
   character(len=*), intent(in) :: fname
   type(type_stellar_params), intent(inout) :: star
@@ -1267,7 +1278,8 @@ end subroutine load_stellar_spectrum
 
 
 
-
+! It uses the star radius, wavelength to make the
+! stellar spectrum.
 subroutine make_stellar_spectrum(lam0, lam1, nlam, star)
   ! lam must be in angstrom.
   double precision, intent(in) :: lam0, lam1
@@ -1387,7 +1399,8 @@ end function get_bott_min_angle
 
 
 
-
+! To get the wavelength and absolute crosssec-
+! tion of H2O.
 subroutine load_H2O_ab_crosssection(fname, wa)
   ! For the data format from Ted Bergin.
   character(len=*), intent(in) :: fname
@@ -1418,7 +1431,8 @@ subroutine load_H2O_ab_crosssection(fname, wa)
 end subroutine load_H2O_ab_crosssection
 
 
-
+! We define the range of x and the step size, then find the
+! frequency and hence the wavelength for Lyman alpha line of Hydrogen.
 subroutine make_H_Lya(T, hi)
   ! Zheng 2002
   ! A factor of c (speed of light) seems to be missing in that paper.
@@ -1482,7 +1496,7 @@ function get_Tdust_Stefan_Boltzmann(flux)
 end function get_Tdust_Stefan_Boltzmann
 
 
-
+! To make the look up table using the dust temperature provided.
 subroutine make_LUT_Tdust(dust, lut, nlen_lut, Tmin, Tmax)
   type(type_optical_property), intent(in) :: dust
   type(type_LUT_Tdust), intent(out) :: lut
@@ -1525,7 +1539,7 @@ subroutine make_LUT_Tdust(dust, lut, nlen_lut, Tmin, Tmax)
 end subroutine make_LUT_Tdust
 
 
-
+! To convert a spectrum to a distribution using frequency values.
 subroutine convert_spec_to_distri(spec, distri, xtype)
   type(type_spectrum_generic), intent(in) :: spec
   type(type_distribution_table), intent(out) :: distri
@@ -1628,7 +1642,9 @@ subroutine init_random_seed(fU)
 end subroutine
 
 
-
+! Using the equations
+! in the code to find the emission information in 3 dimensions. In the second
+! case there is an extra limit on w.
 subroutine get_reemit_dir_uniform(ray)
   type(type_ray), intent(inout) :: ray
   double precision s, t
@@ -1649,7 +1665,9 @@ subroutine get_reemit_dir_uniform(ray)
 end subroutine get_reemit_dir_uniform
 
 
-
+! Using the equations
+! in the code to find the emission information in 3 dimensions. In the second
+! case there is an extra limit on w.
 subroutine get_emit_dir_uniform(ray, minw, maxw)
   type(type_ray), intent(inout) :: ray
   double precision, intent(in) :: minw, maxw
@@ -1674,7 +1692,7 @@ subroutine get_emit_dir_uniform(ray, minw, maxw)
 end subroutine get_emit_dir_uniform
 
 
-
+! The purpose of these subroutines are similar to the previous one, except for the equations used.
 subroutine get_reemit_dir_HenyeyGreenstein(ray, g)
   use phy_const
   implicit none
@@ -1720,7 +1738,7 @@ end subroutine get_reemit_dir_HenyeyGreenstein
 
 
 
-
+! The purpose of these subroutines are similar to the previous one, except for the equations used.
 subroutine get_reemit_dir_Thomson(ray)
   use phy_const
   implicit none
@@ -1824,7 +1842,7 @@ end function rot_around_Z
 
 
 
-
+! It copies data from x1, y1 to x2, y2 with interpolation and resampling.
 subroutine copy_resample(n1, x1, y1, n2, x2, y2)
   ! copy the data in x1 and y1 into x2 and y2 with interpolation and resampling
   ! x1 and x2 must be sorted in ascending order
@@ -1864,7 +1882,9 @@ subroutine getGaussRnd2(rnd, cen, sigma)
   rnd(2) = tmp * sin(phy_2Pi*uv(2)) + cen
 end subroutine getGaussRnd2
 
-
+! Sets limit on various parameters like wavelength, frequency, radius, phi and theta.
+! Using the equations adnsteps finally it
+! calculates energy and photon counts.
 subroutine set_up_collector(collector, minlam, maxlam, dmu, nmu, nr, nphi, ang_mins, ang_maxs)
   type(type_photon_collector), intent(inout) :: collector
   double precision, intent(in), optional :: maxlam, minlam, dmu
@@ -2041,7 +2061,8 @@ pure subroutine collect_photon_do(collector, ph)
   !
 end subroutine collect_photon_do
 
-
+! Using the equations the total flux and counts were
+! calculated. Finally these values were saved.
 subroutine save_collected_photons(fname, collector, imu)
   character(len=*), intent(in) :: fname
   type(type_photon_collector), intent(inout) :: collector
@@ -2079,7 +2100,8 @@ subroutine save_collected_photons(fname, collector, imu)
   close(fU)
 end subroutine save_collected_photons
 
-
+! Uses limit on frequency to store the collected
+! photons per iteration.
 subroutine save_collected_photons_iter(iiter)
   integer, intent(in) :: iiter
   character(len=128) :: fname

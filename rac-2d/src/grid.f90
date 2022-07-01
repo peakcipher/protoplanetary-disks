@@ -117,7 +117,7 @@ subroutine make_grid
   call grid_make_post
 end subroutine make_grid
 
-
+! Deallocates refinement data, spline2d and bary2d into x, y and v.
 subroutine grid_make_post
   if (allocated(refinement_data%xyv)) then
     deallocate(refinement_data%xyv, &
@@ -137,7 +137,7 @@ subroutine grid_make_post
   end if
 end subroutine grid_make_post
 
-
+! To make leaf nodes.
 subroutine make_all_leaves(c)
   type(type_cell), target, intent(in) :: c
   integer idx
@@ -159,7 +159,7 @@ recursive subroutine add_leaves_all(c, idx)
   end do
 end subroutine add_leaves_all
 
-
+! To make surface grid cells.
 subroutine grid_make_surf_bott
   integer i, j, i1, j1
   integer, parameter :: nSurfBott_max = 1024
@@ -217,7 +217,7 @@ subroutine grid_make_surf_bott
   end do
 end subroutine grid_make_surf_bott
 
-
+! To make leaves from root using grid add leaves subroutine.
 subroutine grid_make_leaves(croot)
   type(type_cell), target, intent(in) :: croot
   integer i, idx
@@ -283,7 +283,7 @@ recursive subroutine grid_add_leaves(c, idx)
   end if
 end subroutine grid_add_leaves
 
-
+! Creating neighbouring nodes for a leaf.
 subroutine grid_make_neighbors
   integer i
   integer nnei_max, idx
@@ -378,7 +378,7 @@ function get_ave_val_based_on_data(xmin, xmax, ymin, ymax)
   get_ave_val_based_on_data(2) = sum(vals) * 0.25D0
 end function get_ave_val_based_on_data
 
-
+! To define minimum and maximum x and y vales of grid.
 subroutine grid_init(c)
   type(type_cell), target :: c
   c%xmin = grid_config%rmin
@@ -387,7 +387,9 @@ subroutine grid_init(c)
   c%ymax = grid_config%zmax
 end subroutine grid_init
 
-
+! Three approaches to define the mentioned parameters for a children
+! node columnwise.'
+! Type - I
 subroutine grid_init_columnwise(c)
   type(type_cell), target :: c
   double precision dx0, del_ratio
@@ -473,7 +475,7 @@ subroutine grid_init_columnwise(c)
   !
 end subroutine grid_init_columnwise
 
-
+! Type - II
 subroutine grid_init_columnwise_new(c)
   type(type_cell), target :: c
   double precision dx0, del_ratio
@@ -554,7 +556,7 @@ subroutine grid_init_columnwise_new(c)
   !
 end subroutine grid_init_columnwise_new
 
-
+! Type - III
 subroutine grid_init_columnwise_alt(c)
   type(type_cell), target :: c
   double precision x, dx, dx0, del, ratio
@@ -617,7 +619,7 @@ subroutine grid_init_columnwise_alt(c)
 end subroutine grid_init_columnwise_alt
 
 
-
+! Using grid configuration to find the column locations or indices
 subroutine get_column_locations(n, locs)
   integer, intent(in) :: n
   double precision, dimension(n), intent(out) :: locs
@@ -770,7 +772,8 @@ recursive subroutine grid_refine(c)
   end if
 end subroutine grid_refine
 
-
+! To define the preliminary parameters to be
+! used like minimum and maximum values of x and y.
 subroutine set_cell_par_preliminary(c)
   type(type_cell), target :: c
   if (grid_config%use_data_file_input) then
@@ -781,7 +784,8 @@ subroutine set_cell_par_preliminary(c)
   c%using = c%val(1) .gt. grid_config%min_val_considered
 end subroutine set_cell_par_preliminary
 
-
+! This subroutine creates neighbours around(inner,
+! outer, above and below) using index values.
 subroutine make_neighbors(id)
   integer, intent(in) :: id
   type(type_cell), pointer :: c
@@ -1017,7 +1021,7 @@ function is_uniform(c)
   end if
 end function is_uniform
 
-
+! divide the grid columnwise a tree by finding the mid point.
 subroutine sub_divide(c)
   type(type_cell), target :: c
   if (grid_config%columnwise) then
@@ -1029,7 +1033,9 @@ subroutine sub_divide(c)
   end if
 end subroutine sub_divide
 
-
+! This is used in sub divide(c) and it has 8 cases which
+! uses minimum, maximum and mid values of x and y, for different children
+! to divide the tree.
 subroutine sub_divide_8cases(c)
   type(type_cell), target :: c
   double precision xmid, ymid, del_x_1, del_x_2, del_y_1, del_y_2
@@ -1187,7 +1193,8 @@ subroutine sub_divide_8cases(c)
   end select
 end subroutine sub_divide_8cases
 
-
+! This is slo used in sub divide(c). It does the
+! division work for 2 children node using x and y values.
 subroutine sub_divide_columnwise(c)
   type(type_cell), target :: c
   double precision xmid, ymid, del_y_1, del_y_2
@@ -1512,7 +1519,7 @@ recursive subroutine cell_init(c, parent, nChildren)
   c%using = .false.
 end subroutine cell_init
 
-
+! It uses cell_init and does a similar job for a children node.
 subroutine init_children(c, nChildren)
   type(type_cell), target :: c
   integer i, nChildren
@@ -1533,7 +1540,7 @@ subroutine init_children(c, nChildren)
   end if
 end subroutine init_children
 
-
+! This subroutine does few esthetic refinements like, setting the max aspect ration, cell size etc.
 subroutine grid_decorate(c)
   ! Esthetic refinement
   type(type_cell), target :: c
@@ -1617,7 +1624,9 @@ function is_inside_rect(v, xmin, xmax, ymin, ymax)
   end if
 end function is_inside_rect
 
-
+! Loads data to be refined analytically.
+! A step size is chosen for both x and y directions using maximum and
+! minimum x and y values and few other parameters s defined.
 subroutine load_data_for_refinement
   allocate(refinement_data%ave_val(refinement_data%ncol - 2))
   !call load_data_for_refinement_analytic
@@ -1817,7 +1826,7 @@ pure function Andrews_dens(r, z, andrews)
   end if
 end function Andrews_dens
 
-
+! Loads the RADMC data from the provided location as array.
 subroutine load_data_from_RADMC
   integer nx, ny, i, j
   character(len=256) pathname
@@ -1829,7 +1838,7 @@ subroutine load_data_from_RADMC
   end associate
 end subroutine load_data_from_RADMC
 
-
+! this uses either barycentric or spline method to interpolate.
 subroutine init_interpolation
   if (grid_config%interpolation_method .eq. 'barycentric') then
     call init_interpol_barycentric
@@ -1976,7 +1985,8 @@ recursive subroutine delete_tree(c)
 end subroutine delete_tree
 
 
-
+! Dellaocates various parameters of c if they
+! are not being used.
 subroutine deallocate_when_not_using(c)
   type(type_cell), pointer, intent(inout) :: c
   integer stat

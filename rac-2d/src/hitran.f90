@@ -59,7 +59,8 @@ character(len=12), dimension(2, n_hitran_mol), private :: &
 
 contains
 
-
+! To load the HITRAN molecular transition data in the
+! form of mol data according to energy levels.
 subroutine load_hitran_mol(dir_name, mol_name, mol_data, &
   lam_range, Elow_range, tau_min, N_estimate, orthopara)
   ! Purpose: load the HITRAN molecular transition data
@@ -316,7 +317,7 @@ function get_ortho_para(qnum_gl, qnum_loc)
   end if
 end function get_ortho_para
 
-
+! Defining the parameters names of a line of hitran
 subroutine read_a_line_hitran2012(fU, &
   imol, iiso, wavnum, inten, Acoeff, halfWidthAir, halfWidthSelf, Elow, &
   TcoeffAir, pShiftAir, qUpperGl, qLowerGl, qUpperLoc, qLowerLoc, &
@@ -340,7 +341,8 @@ subroutine read_a_line_hitran2012(fU, &
 end subroutine read_a_line_hitran2012
 
 
-
+! Load energy, weight, and few other parameters
+! corresponding to CO for testing.
 subroutine test_load_ratran_adhoc
   type(type_molecule_energy_set), pointer :: molecule
   call load_hitran_mol(&

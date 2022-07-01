@@ -15,7 +15,7 @@ end type type_table_2d
 
 contains
 
-
+! To extract x, y and value from a binary file.
 subroutine read_binary_array(filename, res)
   character(len=*), intent(in) :: filename
   type(type_table_2d), intent(out) :: res
@@ -59,7 +59,7 @@ subroutine read_binary_array(filename, res)
 end subroutine read_binary_array
 
 
-
+! Store x, y and value from a table into a spline2d
 subroutine create_spline2d_from_table(tab, spl)
   type(type_table_2d), intent(in) :: tab
   type(type_spline_2D), intent(out) :: spl
@@ -79,7 +79,9 @@ subroutine create_spline2d_from_table(tab, spl)
   call spline2d_prepare(spl)
 end subroutine create_spline2d_from_table
 
-
+! This subroutine uses read binary array to generate 
+! a table from a file and then convert that table into 
+! spline2d using, create spline2d from table.
 subroutine create_spline2d_from_file(filename, spl)
   character(len=*), intent(in) :: filename
   type(type_spline_2D), intent(out) :: spl
@@ -89,7 +91,7 @@ subroutine create_spline2d_from_file(filename, spl)
   deallocate(tab%x, tab%y, tab%val)
 end subroutine create_spline2d_from_file
 
-
+! To find the index of elements from a table.
 subroutine get_idx_in_table(ix, iy, x0, y0, tab, is_regular)
   integer, intent(out) :: ix, iy
   type(type_table_2d), intent(in) :: tab

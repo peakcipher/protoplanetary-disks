@@ -9,6 +9,8 @@ integer, parameter, private :: Undef_dirtype = -100
 
 contains
 
+
+! The comments in the code are enough to explain the subroutine.
 subroutine enter_the_domain(ray, cstart, cnext, found)
   ! The photon location will be updated to the entry point if it does enter
   ! the cell.
@@ -47,7 +49,7 @@ subroutine enter_the_domain(ray, cstart, cnext, found)
 end subroutine enter_the_domain
 
 
-
+! The comments in the code are enough to explain the subroutine.
 subroutine enter_the_domain_mirror(ray, cstart, cnext, found)
   ! The photon location will be updated to the entry point if it does enter
   ! the cell.
@@ -85,7 +87,8 @@ subroutine enter_the_domain_mirror(ray, cstart, cnext, found)
 end subroutine enter_the_domain_mirror
 
 
-
+! Using surround regions of a cell and locate photon cell by tree
+! locates the photon cell.
 subroutine locate_photon_cell_alt(r, z, c, dirtype,  cout, found)
   ! Given r and z and start from c, find out a cell containing (r,z).
   double precision, intent(in) :: r, z
@@ -132,7 +135,8 @@ subroutine locate_photon_cell_alt(r, z, c, dirtype,  cout, found)
 end subroutine locate_photon_cell_alt
 
 
-
+! It simply checks the children nodes and if there
+! is no children node then it pops that out.
 subroutine locate_photon_cell_by_tree(r, z, c, cout, found)
   ! Given r and z and start from c, find out a cell containing (r,z).
   double precision, intent(in) :: r, z
@@ -178,7 +182,8 @@ subroutine locate_photon_cell_by_tree(r, z, c, cout, found)
 end subroutine locate_photon_cell_by_tree
 
 
-
+! This runs just like the previous subroutine but
+! the output node will be for a mirror square instead of the original cell.
 subroutine locate_photon_cell_mirror(r, z, c, cout, found)
   ! Given r and z and start from c, find out a cell containing (r,z).
   ! The tree structure is utilized.
@@ -361,7 +366,9 @@ pure subroutine calc_intersection_ray_cell_mirror(ray, c, length, r, z, eps, fou
   !
 end subroutine calc_intersection_ray_cell_mirror
 
-
+! This is used to calculate the intersection of ray
+! with cells. First we check intersection with top and bottom surfaces and
+! then with inner and outer cylindrical boundaries using minimum and maximum x values.
 pure subroutine calc_intersection_ray_cell(ray, c, length, rsq, z, eps, found, dirtype)
   type(type_ray), intent(in) :: ray
   type(type_cell), intent(in) :: c
