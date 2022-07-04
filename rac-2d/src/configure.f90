@@ -93,7 +93,7 @@ subroutine config_do
   if (a_disk%distance .GT. 0D0) then
     mc_conf%dist = a_disk%distance
 #ifdef DO_RAY_TRACING
-    raytracing_conf%dist = a_disk%distance
+    raytracing_conf%dist = a_disk%distance 
   else
     mc_conf%dist = raytracing_conf%dist
 #endif
