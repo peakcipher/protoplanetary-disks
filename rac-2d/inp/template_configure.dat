@@ -1,28 +1,28 @@
 ! All comments should be preceded by a "!".
 ! Inline comments should be separated from the value by at least one blank space.
 &grid_configure
-  grid_config%rmin = 1D-1  ! Grid inner boundary
-  grid_config%rmax = 200D0 ! Grid outer boundary
-  grid_config%zmin = 0D0   ! Grid lower boundary
-  grid_config%zmax = 200D0 ! Grid upper boundary
-  grid_config%dr0  = 2D-2  ! Width of the first r step
-  grid_config%columnwise = .true. ! Grid arranged in column manner
-  grid_config%ncol = 200   ! Number of columns
-  grid_config%use_data_file_input = .false. ! Whether to load structure from a data file
-  grid_config%analytical_to_use = 'Andrews' ! Analytical type; Andrews 2009
-  grid_config%interpolation_method = 'spline'
+  grid_config%rmin                    = 1D-1  ! Grid inner boundary
+  grid_config%rmax                    = 200D0 ! Grid outer boundary
+  grid_config%zmin                    = 0D0   ! Grid lower boundary
+  grid_config%zmax                    = 200D0 ! Grid upper boundary
+  grid_config%dr0                     = 2D-2  ! Width of the first r step
+  grid_config%columnwise              = .true. ! Grid arranged in column manner
+  grid_config%ncol                    = 200   ! Number of columns
+  grid_config%use_data_file_input     = .false. ! Whether to load structure from a data file
+  grid_config%analytical_to_use       = 'Andrews' ! Analytical type; Andrews 2009
+  grid_config%interpolation_method    = 'spline'
   grid_config%max_ratio_to_be_uniform = 1.5D0 ! Determines the coarseness of the grid: highest/lowest within a grid cell
-  grid_config%density_scale     = 8D0 ! Roughly the density scale you are interested in; log scale of cm-3; not very important
-  grid_config%density_log_range = 5D0 ! Range of density scale tou are interested in; not very important
-  grid_config%max_val_considered = 1d19 ! Not used
-  grid_config%min_val_considered = 1d1  ! Min density to be considered in the first few structure iterations
-  grid_config%min_val_considered_use = 1d3 ! Min density actually used
-  grid_config%very_small_len = 1D-6   ! Numerical accuracy of grid sizes; in AU
-  grid_config%smallest_cell_size = 2D-2  ! Grid cell size will not be smaller than this; in AU
-  grid_config%largest_cell_size  = 10D0  ! Largest grid cell size; in AU
+  grid_config%density_scale           = 8D0 ! Roughly the density scale you are interested in; log scale of cm-3; not very important
+  grid_config%density_log_range       = 5D0 ! Range of density scale tou are interested in; not very important
+  grid_config%max_val_considered      = 1d19 ! Not used
+  grid_config%min_val_considered      = 1d1  ! Min density to be considered in the first few structure iterations
+  grid_config%min_val_considered_use  = 1d3 ! Min density actually used
+  grid_config%very_small_len          = 1D-6   ! Numerical accuracy of grid sizes; in AU
+  grid_config%smallest_cell_size      = 2D-2  ! Grid cell size will not be smaller than this; in AU
+  grid_config%largest_cell_size       = 10D0  ! Largest grid cell size; in AU
   grid_config%largest_cell_size_frac  = 1D-1  ! The grid cell size should not be larger than a faction of the distance to the central star
-  grid_config%small_len_frac = 5D-3     ! Similar to smallest_cell_size, but in a fractional sense
-  grid_config%refine_at_r0_in_exp = .false. ! Whether to refine the grid at r0, where the disk structure makes a transition; r0 is set in later sections
+  grid_config%small_len_frac          = 5D-3     ! Similar to smallest_cell_size, but in a fractional sense
+  grid_config%refine_at_r0_in_exp     = .false. ! Whether to refine the grid at r0, where the disk structure makes a transition; r0 is set in later sections
 /
 &chemistry_configure
   chemsol_params%dt_first_step               = 1D-8  ! The first time step in year; time steps for chemical evolution is logarithmic
@@ -43,15 +43,15 @@
 /
 &heating_cooling_configure
   ! When use_analytical_CII_OI is true, the two files will not be used.
-  heating_cooling_config%dir_transition_rates    = './transitions/'  ! Directory for the radiative files
-  heating_cooling_config%use_analytical_CII_OI   = .true.  ! Whether to use analytical formula for CII and OI cooling
-  heating_cooling_config%filename_CII            = ''  ! Cooling rates filename when not using analytical formula
-  heating_cooling_config%filename_OI             = ''
-  heating_cooling_config%IonCoolingWithLut       = .true.  ! What kind of formula to use for ion cooling
-  heating_cooling_config%filename_NII            = 'N+_LUT.bin'
-  heating_cooling_config%filename_SiII           = 'Si+_LUT.bin'
-  heating_cooling_config%filename_FeII           = 'Fe+_LUT.bin'
-  heating_cooling_config%solve_method            = 2  ! Which method to use for calculating the statistical equilibrium for radiative cooling; 1: ODE; 2: Newton
+  heating_cooling_config%dir_transition_rates       = './transitions/'  ! Directory for the radiative files
+  heating_cooling_config%use_analytical_CII_OI      = .true.  ! Whether to use analytical formula for CII and OI cooling
+  heating_cooling_config%filename_CII               = ''  ! Cooling rates filename when not using analytical formula
+  heating_cooling_config%filename_OI                = ''
+  heating_cooling_config%IonCoolingWithLut          = .true.  ! What kind of formula to use for ion cooling
+  heating_cooling_config%filename_NII               = 'N+_LUT.bin'
+  heating_cooling_config%filename_SiII              = 'Si+_LUT.bin'
+  heating_cooling_config%filename_FeII              = 'Fe+_LUT.bin'
+  heating_cooling_config%solve_method               = 2  ! Which method to use for calculating the statistical equilibrium for radiative cooling; 1: ODE; 2: Newton
   heating_cooling_config%use_mygasgraincooling      = .true.  ! What kind of formula to use for calculating gas-grain collisional cooling; if true, use a more accurate form
   heating_cooling_config%use_chemicalheatingcooling = .true.  ! Whether to include chemical heating/cooling
   heating_cooling_config%use_Xray_heating           = .true.  ! Whether to include X-ray heating
@@ -64,39 +64,39 @@
   heating_cooling_config%cooling_gg_coeff           = 1D0  ! Efficiency for gas-grain collisional cooling
 /
 &montecarlo_configure
-  mc_conf%nph                   = 4000000     ! Number of photon packets; divide total star luminosity into this number
-  mc_conf%nmax_cross            = 1999999999  ! Max num of cell crossing before any absorption or scattering for a photon
-  mc_conf%nmax_encounter        = 1999999999  ! Max num of absorption and scattering events for a photon
-  mc_conf%ph_init_symmetric     = .true.    ! Mirror the upper disk and lower disk above and below the midplane
-  mc_conf%refine_UV             = 2D-1  ! Refine for the UV photons; use smaller energy packets for them so that they have better statistics
-  mc_conf%refine_LyA            = 1D-1
-  mc_conf%refine_Xray           = 1D-3
+  mc_conf%nph                      = 4000000     ! Number of photon packets; divide total star luminosity into this number
+  mc_conf%nmax_cross               = 1999999999  ! Max num of cell crossing before any absorption or scattering for a photon
+  mc_conf%nmax_encounter           = 1999999999  ! Max num of absorption and scattering events for a photon
+  mc_conf%ph_init_symmetric        = .true.    ! Mirror the upper disk and lower disk above and below the midplane
+  mc_conf%refine_UV                = 2D-1  ! Refine for the UV photons; use smaller energy packets for them so that they have better statistics
+  mc_conf%refine_LyA               = 1D-1
+  mc_conf%refine_Xray              = 1D-3
   mc_conf%disallow_any_scattering  = .false.  ! If true, there will be no scattering
-  mc_conf%mc_dir_in             = './inp/'  ! Input directory for some needed data
-  mc_conf%mc_dir_out            = 'mc/'
-  mc_conf%fname_photons         = 'escaped_photons.dat'  ! Parameters for each escaped photon are saved in this file
-  mc_conf%fname_water           = 'H2O.photoxs'  ! Water absorption cross section
-  mc_conf%fname_star            = 'tw_hya_spec_combined.dat'  ! Input stellar spectrum
-  mc_conf%collect_photon        = .true.  ! The collected photons can be utilized to make an SED
-  mc_conf%collect_lam_min       = 1D0  ! Minimum lambda; in angstrom
-  mc_conf%collect_lam_max       = 1D8
-  mc_conf%collect_nmu           = 4  ! Number of directions to collect photons
-  mc_conf%collect_ang_mins      = 0D0   4D0    40D0  80D0  ! Ranges of angles (observing direction) to collect photons
-  mc_conf%collect_ang_maxs      = 3D0   10D0   50D0  90D0
-  mc_conf%nlen_lut              = 2048  ! Size of the look-up table for the dust optical parameters needed by the radiative transfer
-  mc_conf%TdustMin              = 1D0  ! Lowest temperature allowed for the dust grains; in K
-  mc_conf%TdustMax              = 2D3  ! Highest temperature allowed for the dust grains
-  mc_conf%use_blackbody_star    = .false.  ! Whether to use blackbody spectrum for the star
-  mc_conf%dist                  = 51.0D0  ! Distance of the source in pc
+  mc_conf%mc_dir_in                = './inp/'  ! Input directory for some needed data
+  mc_conf%mc_dir_out               = 'mc/'
+  mc_conf%fname_photons            = 'escaped_photons.dat'  ! Parameters for each escaped photon are saved in this file
+  mc_conf%fname_water              = 'H2O.photoxs'  ! Water absorption cross section
+  mc_conf%fname_star               = 'tw_hya_spec_combined.dat'  ! Input stellar spectrum
+  mc_conf%collect_photon           = .true.  ! The collected photons can be utilized to make an SED
+  mc_conf%collect_lam_min          = 1D0  ! Minimum lambda; in angstrom
+  mc_conf%collect_lam_max          = 1D8
+  mc_conf%collect_nmu              = 4  ! Number of directions to collect photons
+  mc_conf%collect_ang_mins         = 0D0   4D0    40D0  80D0  ! Ranges of angles (observing direction) to collect photons
+  mc_conf%collect_ang_maxs         = 3D0   10D0   50D0  90D0
+  mc_conf%nlen_lut                 = 2048  ! Size of the look-up table for the dust optical parameters needed by the radiative transfer
+  mc_conf%TdustMin                 = 1D0  ! Lowest temperature allowed for the dust grains; in K
+  mc_conf%TdustMax                 = 2D3  ! Highest temperature allowed for the dust grains
+  mc_conf%use_blackbody_star       = .false.  ! Whether to use blackbody spectrum for the star
+  mc_conf%dist                     = 51.0D0  ! Distance of the source in pc
 /
 &dustmix_configure  ! To make different dust compositions
-  dustmix_info%nmixture = 2  ! Number of mixtures you want to make; max: 4
-  dustmix_info%lam_min  = 1D-4 ! Minimum wavelength (micron) to be considered
-  dustmix_info%lam_max  = 1D4  ! Maximum ...
+  dustmix_info%nmixture            = 2  ! Number of mixtures you want to make; max: 4
+  dustmix_info%lam_min             = 1D-4 ! Minimum wavelength (micron) to be considered
+  dustmix_info%lam_max             = 1D4  ! Maximum ...
   !
-  dustmix_info%mix(1)%id       = 1  ! Mixture 1
-  dustmix_info%mix(1)%nrawdust = 3  ! Number of raw material for mixing
-  dustmix_info%mix(1)%rho      = 3D0 ! Dust material density in g cm-3
+  dustmix_info%mix(1)%id           = 1  ! Mixture 1
+  dustmix_info%mix(1)%nrawdust     = 3  ! Number of raw material for mixing
+  dustmix_info%mix(1)%rho          = 3D0 ! Dust material density in g cm-3
   dustmix_info%mix(1)%dir          = './inp/'
   dustmix_info%mix(1)%filenames(1) = 'silicate_draine.opti'  ! Filename of raw material 1
   dustmix_info%mix(1)%filenames(2) = 'graphite_draine_pa_0.1.opti'
@@ -105,9 +105,9 @@
   dustmix_info%mix(1)%weights(2)   = 0.04D0
   dustmix_info%mix(1)%weights(3)   = 0.16D0
   !
-  dustmix_info%mix(2)%id       = 2  ! Mixture 1
-  dustmix_info%mix(2)%nrawdust = 1  ! Number of raw material for mixing
-  dustmix_info%mix(2)%rho      = 3D0 ! Dust material density in g cm-3
+  dustmix_info%mix(2)%id           = 2  ! Mixture 1
+  dustmix_info%mix(2)%nrawdust     = 1  ! Number of raw material for mixing
+  dustmix_info%mix(2)%rho          = 3D0 ! Dust material density in g cm-3
   dustmix_info%mix(2)%dir          = './inp/'
   dustmix_info%mix(2)%filenames(1) = 'silicate_draine.opti'  ! Filename of raw material 1
   dustmix_info%mix(2)%weights(1)   = 1.0D0  ! Weight of raw material 1
@@ -145,10 +145,10 @@
   !
   a_disk%ndustcompo                = 3  ! Number of dust components
   !
-  a_disk%dustcompo(1)%itype        = 1     ! Dust mixture type to use
-  a_disk%dustcompo(1)%mrn%rmin     = 5D-3  ! Min radius; in micron
-  a_disk%dustcompo(1)%mrn%rmax     = 1D3   ! Max radius
-  a_disk%dustcompo(1)%mrn%n        = 3.5D0 ! Power index for the dust grain size distribution
+  a_disk%dustcompo(1)%itype              = 1     ! Dust mixture type to use
+  a_disk%dustcompo(1)%mrn%rmin           = 5D-3  ! Min radius; in micron
+  a_disk%dustcompo(1)%mrn%rmax           = 1D3   ! Max radius
+  a_disk%dustcompo(1)%mrn%n              = 3.5D0 ! Power index for the dust grain size distribution
   a_disk%dustcompo(1)%andrews%useNumDens = .false.  ! Use mass density insteady of number density
   a_disk%dustcompo(1)%andrews%Md         = 4D-4  ! Total mass in this dust component; in solar mass
   a_disk%dustcompo(1)%andrews%rin        = 1D0  ! Spatial distribution of the dust
@@ -165,10 +165,10 @@
   a_disk%dustcompo(1)%andrews%rs_out_exp = 5D0
   a_disk%dustcompo(1)%andrews%f_out_exp  = 1D0
   !
-  a_disk%dustcompo(2)%itype        = 1      ! Dust mixture type to use
-  a_disk%dustcompo(2)%mrn%rmin     = 5D-3   ! Min radius
-  a_disk%dustcompo(2)%mrn%rmax     = 1D0    ! Max radius
-  a_disk%dustcompo(2)%mrn%n        = 3.5D0  ! Power index
+  a_disk%dustcompo(2)%itype              = 1      ! Dust mixture type to use
+  a_disk%dustcompo(2)%mrn%rmin           = 5D-3   ! Min radius
+  a_disk%dustcompo(2)%mrn%rmax           = 1D0    ! Max radius
+  a_disk%dustcompo(2)%mrn%n              = 3.5D0  ! Power index
   a_disk%dustcompo(2)%andrews%useNumDens = .false. ! Use mass density insteady of number density
   a_disk%dustcompo(2)%andrews%Md         = 2D-5
   a_disk%dustcompo(2)%andrews%rin        = 1D-1
@@ -182,10 +182,10 @@
   a_disk%dustcompo(2)%andrews%p_in_exp   = 3D0
   a_disk%dustcompo(2)%andrews%f_in_exp   = 1D0
   !
-  a_disk%dustcompo(3)%itype        = 2      ! Dust mixture type to use
-  a_disk%dustcompo(3)%mrn%rmin     = 0.9D0  ! Min radius
-  a_disk%dustcompo(3)%mrn%rmax     = 2D0    ! Max radius
-  a_disk%dustcompo(3)%mrn%n        = 3.5D0  ! Power index
+  a_disk%dustcompo(3)%itype              = 2      ! Dust mixture type to use
+  a_disk%dustcompo(3)%mrn%rmin           = 0.9D0  ! Min radius
+  a_disk%dustcompo(3)%mrn%rmax           = 2D0    ! Max radius
+  a_disk%dustcompo(3)%mrn%n              = 3.5D0  ! Power index
   a_disk%dustcompo(3)%andrews%useNumDens = .false. ! Use mass density insteady of number density
   a_disk%dustcompo(3)%andrews%Md         = 1D-9
   a_disk%dustcompo(3)%andrews%rin        = 1D-1
@@ -204,8 +204,8 @@
   raytracing_conf%fname_mol_data         = '12C16O_H2.dat'  ! Filename of the transition rates
   raytracing_conf%line_database          = 'lamda'  ! Data format
   raytracing_conf%mole_name_disp         = 'C$^{18}$O'  ! Actually calculating for C18O, so use this name
-  raytracing_conf%maxx = 2.0000e+02  ! For making images; box size in AU; (-maxx, maxx)
-  raytracing_conf%maxy = 2.0000e+02
+  raytracing_conf%maxx                   = 2.0000e+02  ! For making images; box size in AU; (-maxx, maxx)
+  raytracing_conf%maxy                   = 2.0000e+02
   raytracing_conf%nx                     = 401  ! Number of pixels in each direction
   raytracing_conf%ny                     = 401
   raytracing_conf%nfreq_window           = 3  ! Only care about lines within these frequency windows
@@ -224,8 +224,8 @@
   raytracing_conf%abundance_factor       = 2.0D-3  ! For modeling isotopologues when the transition rates of itself is not available
   raytracing_conf%useLTE                 = .true.  ! Whether use LTE
   raytracing_conf%nth                    = 1  ! Number of viewing angles (theta)
-  raytracing_conf%view_thetas = 7.0000e+00  ! Viewing angles in degree
-  raytracing_conf%dist = 5.1000e+01  ! Distance of the source in pc
+  raytracing_conf%view_thetas            = 7.0000e+00  ! Viewing angles in degree
+  raytracing_conf%dist                   = 5.1000e+01  ! Distance of the source in pc
   raytracing_conf%VeloTurb               = 200D0  ! Turbulent line broadening; in m/s
   raytracing_conf%VeloWidth              = 30D3  ! Additional velocity width added to the spectra velocity range; in m/s
 /
