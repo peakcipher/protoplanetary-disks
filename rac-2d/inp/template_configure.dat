@@ -277,8 +277,8 @@
   !
   a_disk_iter_params%do_vertical_every              = 1  ! How often do we recalculate the vertical structure (if the whole calculation iterates many times)
   a_disk_iter_params%nVertIterTdust                 = 16  ! Maximum number of iteration for dust Monte Carlo radiative transfer
-  a_disk_iter_params%rtol_abun                      = 0.2D0  ! Tolerance for checking the convergency of a cell; only when doing chemical iterations
-  a_disk_iter_params%atol_abun                      = 1D-12
+  a_disk_iter_params%rtol_abun                      = 0.2D0  ! (Relative) Tolerance for checking the convergency of a cell; only when doing chemical iterations
+  a_disk_iter_params%atol_abun                      = 1D-12  ! (Absolute) Tolerance
   a_disk_iter_params%converged_cell_percentage_stop = 0.95  ! Stop if this fraction of cells have converged.
   a_disk_iter_params%n_gas_thrsh_noTEvol            = 1D15  ! Grid cells with density higher than this value will simply take the dust temperature as the gas temperature; in cm-3
   a_disk_iter_params%filename_list_check_refine     = 'species_check_refine.dat'  ! Do grid cell refinement based on species in this file.

@@ -315,7 +315,7 @@ subroutine load_cdms_partition(dir_name, fname, moltag)
 end subroutine load_cdms_partition
 
 
-
+! After loading the CDMS data, this function does the calculation of temperature
 function cdms_calc_partition(T) result(Q)
   double precision Q
   double precision, intent(in) :: T
@@ -337,7 +337,7 @@ function cdms_calc_partition(T) result(Q)
 end function cdms_calc_partition
 
 
-
+! Calculation of energy and transitions from the CDMS data
 function cdms_calc_partition_my(mol_data, T) result(Q)
   double precision Q
   type(type_molecule_energy_set), intent(in) :: mol_data
@@ -349,7 +349,7 @@ function cdms_calc_partition_my(mol_data, T) result(Q)
   end do
 end function cdms_calc_partition_my
 
-
+! Calculation of intensity from the CDMS data
 function cdms_intensity2Aul(intens, freq_Hz, Elow, Eup, gup, T) result(Aul)
   double precision Aul
   double precision, intent(in) :: intens, freq_Hz, Elow, Eup, gup, T

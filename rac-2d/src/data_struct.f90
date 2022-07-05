@@ -16,11 +16,15 @@ integer, parameter :: NumOfBasicParam = 2 ! number of basic parameters
 
 integer, parameter :: LongInt = 8 ! what?
 
+
+! defining the parameters for a photon packet (position and velocity)
 type :: type_ray
   double precision x, y, z, vx, vy, vz  ! presumable defines parameters of a light ray, position and velocity
 end type type_ray
 
-
+! optical parameters of the photon: wavelength, energy etc
+! iKap is related to indices of optical data (as in the input file silicate.kappa) 
+! and iSpec is related to indices of stellar spectrum (used in subroutine montecarlo_do)
 type :: type_photon_packet
   ! Mainly for Monte Carlo.
   type(type_ray) :: ray
@@ -30,7 +34,7 @@ type :: type_photon_packet
   integer e_count
 end type type_photon_packet
 
-
+! Mainly for ray-tracing (to make image and spectra)
 type :: type_photon_ray_multi
   ! Mainly for ray-tracing (to make image and spectra)
   type(type_ray) :: ray
@@ -45,7 +49,7 @@ type :: type_position_cartesian ! defining cartrsian co-ordinates
 end type type_position_cartesian
 
 
-
+! directional parameters for cartesian co-ordinates (https://knowledge.autodesk.com/support/3ds-max/learn-explore/caas/CloudHelp/cloudhelp/2015/ENU/3DSMax/files/GUID-8712A53B-CAFB-4EAF-B00E-E95B65C8FB71-htm.html)
 type :: type_direction_cartesian
   double precision u, v, w
 end type type_direction_cartesian
@@ -55,7 +59,7 @@ type :: type_sphere_coor_quat !  defining spherical co-ordinates
   double precision costheta, sintheta, cosphi, sinphi
 end type type_sphere_coor_quat
 
-
+! for collecting photons after calculations
 type :: type_photon_collector
   ! Use mu = cos(theta) instead of theta to save some calculations.
   integer nlam, iKap0, iKap1, nmu, nr, nphi
@@ -65,20 +69,20 @@ type :: type_photon_collector
   integer, dimension(:,:,:,:), allocatable :: counts
 end type type_photon_collector
 
-
+! defining spectrum
 type :: type_spectrum_generic
   integer n
   double precision, dimension(:,:), allocatable :: intervals
   double precision, dimension(:), allocatable :: vals
 end type type_spectrum_generic
 
-
+! used in converting a spectrum to a distribution using frequency values.
 type :: type_distribution_table
   integer n
   double precision, dimension(:), allocatable :: pvals
 end type type_distribution_table
 
-
+! Point (location) list and species list for analysis
 type :: type_simple_integer_list
   integer :: nlen = 0
   integer, dimension(:), allocatable :: vals

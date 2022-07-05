@@ -45,15 +45,15 @@ type(date_time) a_date_time
 !call error_stop()
 !!! END OF TEST REGION
 
-call get_command_argument(0, a_disk_iter_params%filename_exe, i, j)
+call get_command_argument(0, a_disk_iter_params%filename_exe, i, j) ! feeds arguments on the command line
 call get_command_argument(1, filename_config, i, j)
 if (i .EQ. 0) then
   filename_config = 'configure.dat'
 end if
 
-call config_do
+call config_do ! from config.f90, reads input from .dat file and creates logs/backups
 
-call timer%init('Main')
+call timer%init('Main') ! initialize timer for iteration
 
 call disk_iteration
 
@@ -64,7 +64,7 @@ if (a_disk_iter_params%redo_something) then
 end if
 
 #ifdef DO_RAY_TRACING
-    call post_disk_iteration
+    call post_disk_iteration ! All the leaf nodes are associated to c (what does this mean?)
     !
     if (a_disk_iter_params%do_continuum_transfer) then
       call continuum_tran_prep

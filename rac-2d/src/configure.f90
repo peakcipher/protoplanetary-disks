@@ -25,8 +25,10 @@ subroutine config_do
   integer fU
   type(date_time) a_date_time
   !
-  call openFileSequentialRead(fU, filename_config, 999, getu=1)
-  !
+  call openFileSequentialRead(fU, filename_config, 999, getu=1) ! opens file with unit = fu under sequential access
+  ! READ FILES FROM DIFFERENT NAMELISTS (nml).
+  ! why to use namelists? --> to create one input file for all parameters
+  ! read command will start from &nml to the next & sign
   read(fU, nml=grid_configure)
   read(fU, nml=chemistry_configure)
   read(fU, nml=heating_cooling_configure)
@@ -40,7 +42,7 @@ subroutine config_do
   read(fU, nml=analyse_configure)
   read(fU, nml=iteration_configure)
   !
-  close(fU, status='KEEP')
+  close(fU, status='KEEP') ! disconnects files from respective units but keeps the data read
   !
   if (.NOT. dir_exist(a_disk_iter_params%iter_files_dir)) then
     call my_mkdir(a_disk_iter_params%iter_files_dir)
@@ -59,7 +61,7 @@ subroutine config_do
     write(*,*) 'I would rather not overwrite it.'
     call error_stop()
   else
-    call my_cp_to_dir(filename_config, a_book_keeping%dir)
+    call my_cp_to_dir(filename_config, a_book_keeping%dir) ! Logs begin here
   end if
   !
   call openFileSequentialWrite(a_book_keeping%fU, &
