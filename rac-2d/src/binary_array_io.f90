@@ -1,3 +1,4 @@
+! test
 module binary_array_io
 
 use trivials
