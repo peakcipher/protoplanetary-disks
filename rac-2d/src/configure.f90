@@ -20,6 +20,10 @@ contains
 ! grid configure, chemistry configure, heating cooling configure, montecarlo configure,
 ! dustmix configure, disk configure etc. This subroutine also saves the disk
 ! iteration parameters.
+
+! the first DO_RAY_TRACING actually decides whether to do ray tacing or not
+! the second DO_RAY_TRACING is for book-keeping/logs purposes
+! the last DO_RAY_TRACING decides the distance limit upto which ray tracing is to be done
 subroutine config_do
   use my_timer
   integer fU

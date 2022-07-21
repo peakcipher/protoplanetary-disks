@@ -14,6 +14,8 @@ use statistic_equilibrium
 
 implicit none
 
+! basic params for the disk (stellar temp/mass/radius)
+! also introduces data type for andrew_gas
 type :: type_disk_basic_params
   double precision star_mass_in_Msun, star_radius_in_Rsun, star_temperature
   double precision :: distance = 0D0
@@ -35,7 +37,7 @@ type :: type_disk_basic_params
   logical :: Tdust_iter_tandem = .false.
 end type type_disk_basic_params
 
-
+! iteration params for the disk model
 type :: type_disk_iter_params
   integer :: n_iter=128, n_iter_used = 0
   integer :: nlocal_iter = 2
@@ -132,7 +134,7 @@ type :: type_disk_iter_params
   !
 end type type_disk_iter_params
 
-
+! analysis params for the disk model
 type :: type_ana_params
   logical :: do_analyse = .false.
   integer ana_i_incr
@@ -142,13 +144,13 @@ type :: type_ana_params
   type(type_cell_rz_phy_basic) chempar
 end type type_ana_params
 
-
+! storage params for disk model
 type :: type_disk_iter_storage
   double precision, dimension(:), allocatable :: T_s
   double precision, dimension(:,:), allocatable :: abundances
 end type type_disk_iter_storage
 
-
+! for logs
 type :: type_book_keeping
   integer fU
   character(len=128) dir, filename_log
@@ -157,7 +159,7 @@ end type type_book_keeping
 ! For logging
 type(type_book_keeping) a_book_keeping
 
-
+! timekeeping
 type(date_time), private :: a_date_time
 
 ! Basic config params of the disk model
@@ -1552,8 +1554,8 @@ end subroutine montecarlo_reset_cells
 ! This subroutine uses the dust data and various
 ! physical parameters provided by us and creates the optical dust data and
 ! the chemical stuff.
-! Finally the data is heating and ooling is also done
-! through heating cooling prepare subroutine.
+! Finally the data is heating and cooling is also done
+! through heating_cooling_prepare subroutine.
 subroutine disk_iteration_prepare
   integer i
   !

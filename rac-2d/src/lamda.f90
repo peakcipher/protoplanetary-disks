@@ -13,7 +13,7 @@ contains
 ! name then the energy levels. Next it allocates the radiative transitions.
 ! Finally from the frequency info, generated from energy, it computes the
 ! wavelength. It also allocates the collisional tranistions and tempreature
-! in next few parts. FInally it makes the list f temperatures and collision
+! in next few parts. Finally it makes the list of temperatures and collision
 ! coefficients. 
 subroutine load_moldata_LAMDA(filename, mol_data)
   character(len=*), intent(in) :: filename
