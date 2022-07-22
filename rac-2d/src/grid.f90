@@ -217,7 +217,7 @@ subroutine grid_make_surf_bott
   end do
 end subroutine grid_make_surf_bott
 
-! To make leaves from root using grid add leaves subroutine.
+! To make leaves from root using grid_add_leaves subroutine.
 subroutine grid_make_leaves(croot)
   type(type_cell), target, intent(in) :: croot
   integer i, idx
